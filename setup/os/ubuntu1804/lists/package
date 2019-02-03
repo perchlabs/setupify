@@ -1,0 +1,26 @@
+# tools
+composer
+curl
+dialog
+git
+vim
+
+# php
+php-cli
+php-fpm
+php-common
+php-curl
+php-mbstring
+php-pear
+php-zip
+
+# dev libraries
+autoconf
+automake
+composer
+gcc
+libpcre3-dev
+make
+php-dev
+re2c
+
