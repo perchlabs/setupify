@@ -1,10 +1,11 @@
 
 startMenu() {
+  local menuCustomList
   local fileName
   local fileNames=$(find "$LIB_DIR"/menu/*.sh -printf "%f\n")
   for fileName in $fileNames; do
     source "$LIB_DIR/menu/$fileName"
-    export MENU_CUSTOM_LIST="$MENU_CUSTOM_LIST ${fileName%%.*}"
+    menuCustomList="$menuCustomList ${fileName%%.*}"
   done
 
   export DIALOG=$(which dialog whiptail 2> /dev/null | head -n 1)
@@ -29,7 +30,7 @@ startMenu() {
         ;;
       "customize")
         while true; do
-          menuCustomize
+          menuCustomize "$menuCustomList"
           [[ $? -ne 0 ]] && break;
         done
         ;;
@@ -73,6 +74,8 @@ export -f menuOverview
 
 
 menuCustomize() {
+  local menuList="$1"
+
   local status
   status=$(printInstallStatus)
   local statusLines=$?
@@ -88,13 +91,13 @@ EOM
   local menuVar
   local pairs
   local tag
-  for tag in $MENU_CUSTOM_LIST; do
+  for tag in $menuList; do
     menuVar="MENU_${tag^^}_NAME"
     [[ -z "${!menuVar}" ]] && item=$tag || item="${!menuVar}"
     pairs="$pairs $tag $item"
   done
 
-  local itemArr=($MENU_CUSTOM_LIST)
+  local itemArr=($menuList)
   local numItems=${#itemArr[@]}
   local totalLines=$(($statusLines + $numItems + 8))
   totalLines=$(($totalLines > 24 ? 24 : $totalLines))
