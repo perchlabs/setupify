@@ -1,13 +1,5 @@
 
-startMenu() {
-  local menuCustomList
-  local fileName
-  local fileNames=$(find "$LIB_DIR"/menu/*.sh -printf "%f\n")
-  for fileName in $fileNames; do
-    source "$LIB_DIR/menu/$fileName"
-    menuCustomList="$menuCustomList ${fileName%%.*}"
-  done
-
+menuInit() {
   export DIALOG=$(which dialog whiptail 2> /dev/null | head -n 1)
   if [[ -z "$DIALOG" ]]; then
     >&2 echo "The dialog or whiptail command could not be found."
@@ -17,6 +9,56 @@ startMenu() {
   export DIALOG_OK=0
   export DIALOG_CANCEL=1
   export DIALOG_ESC=255
+}
+export -f menuInit
+
+
+menuOsname() {
+  local osName=$1
+
+  if [[ ! -z "$osName" ]]; then
+    echo "$osName"
+    exit 0
+  fi
+
+  local tag
+  local pairs
+  local osArr=($(ls -1 "$SETUP_ROOT_DIR/os"))
+  for tag in ${osArr[@]}; do
+    pairs="$pairs $tag $tag"
+  done
+
+  local numItems=${#osArr[@]}
+  local totalLines=$(($numItems + 7))
+  local option
+  option=$("$DIALOG" \
+    --backtitle "$MENU_BACKTITLE" \
+    --title "Choose OS for provisioning" \
+    --notags \
+    --nocancel \
+    --menu "Choose which OS to us for provisioning." $totalLines 70 $numItems \
+      $pairs \
+    3>&1 1>&2 2>&3)
+  [[ $? -ne "$DIALOG_OK" ]] && return 1
+
+  echo $option
+}
+export -f menuOsname
+
+
+menuStart() {
+  # Load menu data.
+  set -a
+  source "$LIB_DIR/menu_data.sh"
+  set +a
+
+  local menuCustomList
+  local fileName
+  local fileNames=$(find "$LIB_DIR"/menu/*.sh -printf "%f\n")
+  for fileName in $fileNames; do
+    source "$LIB_DIR/menu/$fileName"
+    menuCustomList="$menuCustomList ${fileName%%.*}"
+  done
 
   local choice
   while true; do
@@ -40,7 +82,7 @@ startMenu() {
     esac
   done
 }
-export -f startMenu
+export -f menuStart
 
 
 menuOverview() {

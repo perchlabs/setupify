@@ -11,7 +11,7 @@ initCommon() {
 
   export OS_DIR="$SETUP_ROOT_DIR/os/$osName"
   if [[ ! -d "$OS_DIR" ]]; then
-    >&2 echo "A provisioning directory does not exist for '$OS_NAME'."
+    >&2 echo "A provisioning directory does not exist for '$osName'."
     exit 1
   fi
   export TEMP_DIR=$(mktemp -d)

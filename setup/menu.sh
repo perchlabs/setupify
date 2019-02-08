@@ -5,5 +5,6 @@ LIB_DIR=$SETUP_ROOT_DIR/lib
 source "$LIB_DIR/common.sh"
 source "$LIB_DIR/menu.sh"
 
-initCommon "$1"
-startMenu
+menuInit
+initCommon $(menuOsname "$1")
+menuStart
