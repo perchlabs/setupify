@@ -3,7 +3,7 @@
 
 echo -e "${COLOR_SECTION}*** Initialization ***${TEXT_RESET}"
 
-echo "Attemping sudo capabilities"
+echo "Obtaining sudo capabilities"
 sudo ls / > /dev/null
 if [[ $? -ne 0 ]]; then
   >&2 echo -e "FAILED to obtain sudo access"

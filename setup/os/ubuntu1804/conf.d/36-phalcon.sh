@@ -8,7 +8,7 @@ echo -e "${COLOR_SECTION}*** Phalcon ***${TEXT_RESET}"
 
 cd "$TEMP_DIR"
 
-# Obtain Phalcon source if not using repository method.
+# Determine the method used for installing Phalcon.
 method=$(takeMethod "$PHALCON_INSTALL")
 case "$method" in
   "git")
@@ -18,7 +18,16 @@ case "$method" in
 
     git clone --quiet --depth=1 -b "$gitBranch" "$gitUrl" cphalcon > /dev/null
     [[ $? -ne 0 ]] && exit 1
+
     cd cphalcon
+    [[ $? -ne 0 ]] && exit 1
+
+    # Compile and install Phalcon source.
+    zephir --quiet install > /dev/null
+    if [[ $? -ne 0 ]]; then
+      >&2 echo "Unable to compile and install Phalcon."
+      exit 1
+    fi
     ;;
   "tarball")
     ref=$(takeRef "$PHALCON_INSTALL")
@@ -50,6 +59,13 @@ case "$method" in
 
     cd "$mysteryDirName"
     [[ $? -ne 0 ]] && exit 1
+
+    # Compile and install Phalcon source.
+    zephir --quiet install > /dev/null
+    if [[ $? -ne 0 ]]; then
+      >&2 echo "Unable to compile and install Phalcon."
+      exit 1
+    fi
     ;;
   "repository")
     sudo apt-get install --quiet=2 "php${PHP_VERSION}-phalcon"
@@ -61,14 +77,10 @@ case "$method" in
     ;;
 esac
 
-# Install Phalcon
-case "$method" in
-  "git" | "tarball")
-    # The current directory should be the phalcon source.
-    zephir --quiet install > /dev/null
-    [[ $? -ne 0 ]] && exit 1
-    phpExtensionEnableAll phalcon 20
-    ;;
-esac
+phpExtensionEnableAll phalcon 50
+if [[ $? -ne 0 ]]; then
+  >&2 echo "Unable to enable Phalcon extension."
+  exit 1
+fi
 
 printf "Phalcon extension installed.\n"

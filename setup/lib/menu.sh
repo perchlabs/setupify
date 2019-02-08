@@ -141,7 +141,8 @@ printInstallStatus() {
     name=${nameArr[$i]}
 
     printf "%${maxLen}s" $name
-    echo ": ${!installVar}"
+    printf ": "
+    [[ -z "${!installVar}" ]] && echo "---" || echo "${!installVar}"
   done
 
   # Return the number of status lines
