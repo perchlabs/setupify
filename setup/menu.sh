@@ -6,5 +6,5 @@ source "$LIB_DIR/common.sh"
 source "$LIB_DIR/menu.sh"
 
 menuInit
-initCommon $(menuOsname "$1")
+initCommon "$(menuOsname "$1")"
 menuStart
