@@ -1,18 +1,17 @@
 #!/usr/bin/env bash
 # Environment variables OS_DIR and TEMP_DIR are available
 
-[[ ! -z "$SKIP_PACKAGES" ]] && exit 0
+method=$(takeMethod "$NODE_INSTALLER")
+[[ -z "$method" ]] && exit 0
 
-# Remove existing installed Node repositories.
+# Remove existing repositories.
 echo "Removing any existing Node repositories"
 sudo rm -f /etc/apt/sources.list.d/nodesource.list > /dev/null
 
-# If the Node method is not 'repository' then exit
-method=$(takeMethod "$NODE_INSTALL")
 [[ "$method" != repository ]] && exit 0
 
 echo "Installing Node repository"
-ref=$(takeRef "$NODE_INSTALL")
+ref=$(takeRef "$NODE_INSTALLER")
 
 # Create repository list file text
 read -r -d '' repositoryText << EOM

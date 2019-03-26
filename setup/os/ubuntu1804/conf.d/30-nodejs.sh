@@ -1,22 +1,31 @@
 #!/usr/bin/env bash
 # Environment variables OS_DIR and TEMP_DIR are available
 
-# You can skip Node steps by exporting this.
-[[ ! -z "$SKIP_NODE" ]] && exit 0
+method=$(takeMethod "$NODEJS_INSTALLER")
+[[ -z "$method" ]] && exit 0
 
 echo -e "${COLOR_SECTION}*** Node.js ***${TEXT_RESET}"
 
 cd "$TEMP_DIR"
 
+packageName=nodejs
+
+# If the Node.js installation method is something other than repository
+# then remove the package from the system so that it doesn't interfere
+# with other installation methods.
+if [[ "$method" != repository ]]; then
+  dpkg -s "$packageName" 2>&1 /dev/null
+  [[ $? -eq 0 ]] && sudo apt-get remove "$packageName"
+fi
+
 # Determine the method used for installing Node.js.
-method=$(takeMethod "$NODEJS_INSTALL")
 case "$method" in
   "")
     echo "No installer specified."
     exit 0
     ;;
   # "tarball")
-  #   ref=$(takeRef "$NODEJS_INSTALL")
+  #   ref=$(takeRef "$NODEJS_INSTALLER")
   #   downloadDir="$TEMP_DIR/nodejs"
 
   #   mkdir "$downloadDir"
@@ -47,7 +56,12 @@ case "$method" in
   #   [[ $? -ne 0 ]] && exit 1
   #   ;;
   "repository")
-    sudo apt-get install --quiet=2 nodejs
+    if [[ ! -z "$SKIP_PACKAGES" ]]; then
+      echo "Skipping Node.js package installation due to SKIP_PACKAGES being set."
+      exit 0
+    fi
+
+    sudo apt-get install --quiet=2 "$packageName"
     [[ $? -ne 0 ]] && exit 1
     ;;
   *)

@@ -1,15 +1,18 @@
 
 menu_zparser() {
-  local method=$(takeMethod "$ZPARSER_INSTALL")
+  local project=ZPARSER
+  local install="${ZPARSER_INSTALLER:-$ZPARSER_DEFAULT}"
+  local method=$(takeMethod "$install")
 
   local option
   option=$("$DIALOG" \
     --backtitle "$MENU_BACKTITLE" \
-    --title "zephir_parser Install Method" \
+    --title "zephir_parser Installer Method" \
     --notags \
     --default-item $method \
     --cancel-button "Return to Customize" \
-    --menu "Choose the method to install zephir_parser." 10 60 2 \
+    --menu "Choose the method for installing zephir_parser." 11 60 3 \
+      clear "Clear Installer" \
       "tarball" "Tarball" \
       "git" "Git" \
       3>&1 1>&2 2>&3)
@@ -19,15 +22,20 @@ menu_zparser() {
   local refNew
   case "$option" in
     "tarball")
-      refNew=$(menuTarball ZPARSER)
+      refNew=$(menuTarball $project "$install")
       [[ $? -ne 0 ]] && return 0
       ;;
     "git")
-      refNew=$(menuGit ZPARSER)
+      refNew=$(menuGit $project "$install")
       [[ $? -ne 0 ]] && return 0
       ;;
   esac
 
-  ZPARSER_INSTALL="${methodNew}:${refNew}"
+  if [[ "$option" == "clear" ]]; then
+    unset ZPARSER_INSTALLER
+  else
+    ZPARSER_INSTALLER="${methodNew}:${refNew}"
+  fi
+
 }
 export -f menu_zparser

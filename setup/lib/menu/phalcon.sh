@@ -1,17 +1,20 @@
 
 menu_phalcon() {
-  local method=$(takeMethod "$PHALCON_INSTALL")
+  local project=PHALCON
+  local install="${PHALCON_INSTALLER:-$PHALCON_DEFAULT}"
+  local method=$(takeMethod "$install")
 
   local option
   option=$("$DIALOG" \
     --backtitle "$MENU_BACKTITLE" \
-    --title "Phalcon Install Method" \
+    --title "Phalcon Installer method" \
     --notags \
     --default-item $method \
-    --menu "Choose the method to install Phalcon." 10 60 3 \
-      "repository" "Package Repository" \
-      "tarball" "Tarball" \
-      "git" "Git" \
+    --menu "Choose the method for installing Phalcon." 11 60 4 \
+      clear "Clear Installer" \
+      repository "Package Repository" \
+      tarball "Tarball" \
+      git "Git" \
       3>&1 1>&2 2>&3)
   [[ $? -ne "$DIALOG_OK" ]] && return 0
 
@@ -19,19 +22,23 @@ menu_phalcon() {
   local refNew
   case "$option" in
     "repository")
-      refNew=$(menuRepository PHALCON)
+      refNew=$(menuRepository $project "$install")
       [[ $? -ne 0 ]] && return 0
       ;;
     "tarball")
-      refNew=$(menuTarball PHALCON)
+      refNew=$(menuTarball $project "$install")
       [[ $? -ne 0 ]] && return 0
       ;;
     "git")
-      refNew=$(menuGit PHALCON)
+      refNew=$(menuGit $project "$install")
       [[ $? -ne 0 ]] && return 0
       ;;
   esac
 
-  PHALCON_INSTALL="${methodNew}:${refNew}"
+  if [[ "$option" == "clear" ]]; then
+    unset PHALCON_INSTALLER
+  else
+    PHALCON_INSTALLER="${methodNew}:${refNew}"
+  fi
 }
 export -f menu_phalcon

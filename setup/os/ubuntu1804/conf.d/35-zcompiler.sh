@@ -6,8 +6,8 @@
 
 echo -e "${COLOR_SECTION}*** Zephir ***${TEXT_RESET}"
 
-method=$(takeMethod "$ZCOMPILER_INSTALL")
-mkdir -p ~/bin/ "$SOFTWARE_INSTALL_ROOT"
+method=$(takeMethod "$ZCOMPILER_INSTALLER")
+mkdir -p ~/bin/ "$SOFTWARE_INSTALLER_ROOT"
 symlinkPath=~/bin/zephir
 
 cd "$TEMP_DIR"
@@ -15,9 +15,9 @@ cd "$TEMP_DIR"
 # Install Zephir
 case "$method" in
   "git")
-    installDir="${SOFTWARE_INSTALL_ROOT}/zephir"
-    gitBranch=$(takeRefFirst "$ZCOMPILER_INSTALL")
-    gitUrl=$(takeRefRest "$ZCOMPILER_INSTALL")
+    installDir="${SOFTWARE_INSTALLER_ROOT}/zephir"
+    gitBranch=$(takeRefFirst "$ZCOMPILER_INSTALLER")
+    gitUrl=$(takeRefRest "$ZCOMPILER_INSTALLER")
 
     echo "Git cloning Zephir repository"
 
@@ -32,7 +32,7 @@ case "$method" in
     echo "Symlink installed at $symlinkPath"
     ;;
   "tarball")
-    ref=$(takeRef "$ZCOMPILER_INSTALL")
+    ref=$(takeRef "$ZCOMPILER_INSTALLER")
     downloadDir="$TEMP_DIR/zcompiler"
 
     mkdir "$downloadDir"
@@ -50,7 +50,7 @@ case "$method" in
       url="https://github.com/phalcon/zephir/archive/${version}.tar.gz"
     fi
 
-    installDir="${SOFTWARE_INSTALL_ROOT}/${name}"
+    installDir="${SOFTWARE_INSTALLER_ROOT}/${name}"
 
     # If the directory already exists.
     if [[ -d "$installDir" ]]; then
@@ -93,7 +93,7 @@ case "$method" in
     echo "Symlink installed at $symlinkPath"
     ;;
   "phar")
-    ref=$(takeRef "$ZCOMPILER_INSTALL")
+    ref=$(takeRef "$ZCOMPILER_INSTALLER")
 
       # The ref is a url or version.
     isUrl "$ref"
@@ -107,7 +107,7 @@ case "$method" in
       url="https://github.com/phalcon/zephir/releases/download/${version}/zephir.phar"
     fi
 
-    installFile="${SOFTWARE_INSTALL_ROOT}/${name}.phar"
+    installFile="${SOFTWARE_INSTALLER_ROOT}/${name}.phar"
 
     if [[ -f "$installFile" ]]; then
 

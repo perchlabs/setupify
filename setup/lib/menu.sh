@@ -32,11 +32,10 @@ menuOsname() {
   local totalLines=$(($numItems + 7))
   local option
   option=$("$DIALOG" \
-    --backtitle "$MENU_BACKTITLE" \
-    --title "Choose OS for provisioning" \
+    --title "Choose OS for installation" \
     --notags \
     --nocancel \
-    --menu "Choose which OS to us for provisioning." $totalLines 70 $numItems \
+    --menu "Choose which OS to us for installation." $totalLines 70 $numItems \
       $pairs \
     3>&1 1>&2 2>&3)
   [[ $? -ne "$DIALOG_OK" ]] && return 1
@@ -60,6 +59,10 @@ menuStart() {
     menuCustomList="$menuCustomList ${fileName%%.*}"
   done
 
+  # menu_nodejs
+  # exit
+
+
   local choice
   while true; do
     choice=$(menuOverview)
@@ -67,7 +70,7 @@ menuStart() {
 
     case "$choice" in
       "install")
-        startProvision
+        startInstallation
         break;
         ;;
       "customize")
@@ -75,6 +78,12 @@ menuStart() {
           menuCustomize "$menuCustomList"
           [[ $? -ne 0 ]] && break;
         done
+        ;;
+      "load_installers")
+        loadInstallers
+        ;;
+      "clear_installers")
+        clearInstallers
         ;;
       *)
         exit 0
@@ -92,22 +101,24 @@ menuOverview() {
 
   local msg
   read -r -d '' msg << EOM
-Would you like to provision using the current settings?
+Would you like to install using the current settings?
 
 $status
 EOM
 
-    local totalLines=$(($statusLines + 10))
+    local totalLines=$(($statusLines + 12))
     local option
     option=$("$DIALOG" \
       --backtitle "$MENU_BACKTITLE" \
-      --title "Provision Overview" \
+      --title "Installation Overview" \
       --notags \
       --yes-button Install \
       --cancel-button Exit \
-      --menu "$msg" $totalLines 110 2 \
+      --menu "$msg" $totalLines 110 4 \
         install Install \
         customize Customize \
+        load_installers 'Load All Installers' \
+        clear_installers 'Clear All Installers' \
     3>&1 1>&2 2>&3)
     [[ $? -ne "$DIALOG_OK" ]] && return 1
     echo $option
@@ -146,7 +157,7 @@ EOM
   local option
   option=$("$DIALOG" \
     --backtitle "$MENU_BACKTITLE" \
-    --title "Customize Provision" \
+    --title "Customize Installation" \
     --notags \
     --cancel-button "Return to Overview" \
     --menu "$msg" $totalLines 110 $numItems \
@@ -159,9 +170,10 @@ export -f menuCustomize
 
 
 printInstallStatus() {
-  local installArr=($(compgen -v | grep -e '_INSTALL$'))
+  local installArr=($(compgen -v | grep -e '_INSTALLER$'))
+  local installCount=${#installArr[@]}
   local nameArr=()
-  local regex='(.+)_INSTALL$'
+  local regex='(.+)_INSTALLER$'
 
   local installVar
   local maxLen=0
@@ -178,26 +190,32 @@ printInstallStatus() {
   printf "%${maxLen}s" PHP
   echo ": $PHP_VERSION"
 
-  for i in ${!nameArr[@]}; do
-    installVar=${installArr[$i]}
-    name=${nameArr[$i]}
+  let outputLineCount=$((installCount + 1))
 
-    printf "%${maxLen}s" $name
-    printf ": "
-    [[ -z "${!installVar}" ]] && echo "---" || echo "${!installVar}"
-  done
+  if [[ "$installCount" -eq 0 ]]; then
+    outputLineCount=$((outputLineCount + 1))
+    echo "No installers are configured"
+  else
+    for i in ${!nameArr[@]}; do
+      installVar=${installArr[$i]}
+      name=${nameArr[$i]}
+
+      printf "%${maxLen}s" $name
+      printf ": "
+      [[ -z "${!installVar}" ]] && echo "---" || echo "${!installVar}"
+    done
+  fi
 
   # Return the number of status lines
-  local installCount=${#installArr[@]}
-  return $((installCount + 1))
+  return $outputLineCount
 }
 export -f printInstallStatus
 
 
 menuTarball() {
   local project=$1
+  local install=$2
 
-  local installVar=${project}_INSTALL
   local nameVar=MENU_${project}_NAME
   local versionsVar=MENU_${project}_VERSIONS
   local examplesVar=MENU_${project}_TARBALL_EXAMPLES
@@ -213,8 +231,8 @@ Examples; ${!examplesVar}
 
   # If the installation method was something other than this
   # then the defaults for this method will need to be used instead.
-  local method=$(takeMethod "${!installVar}")
-  [[ "$method" = tarball ]] && local ref=$(takeRef "${!installVar}") || local ref=${!defaultVersionVar}
+  local method=$(takeMethod "${!install}")
+  [[ "$method" = tarball ]] && local ref=$(takeRef "${!install}") || local ref=${!defaultVersionVar}
 
   local numExamples=$(echo -n "${!examplesVar}" | grep -c '^')
   local totalLines=$(($numExamples + 12))
@@ -240,6 +258,7 @@ export -f menuTarball
 
 menuGit() {
   local project=$1
+  local install=$2
 
   local url
   url=$(menuGitUrl "$project")
@@ -256,8 +275,8 @@ export -f menuGit
 
 menuGitUrl() {
   local project=$1
+  local install=$2
 
-  local installVar=${project}_INSTALL
   local nameVar=MENU_${project}_NAME
   local defaultUrlVar=MENU_${project}_GIT_URL_DEFAULT
 
@@ -270,9 +289,9 @@ Examples;
 
   # If the installation method was something other than this
   # then the defaults for this method will need to be used instead.
-  local method=$(takeMethod "${!installVar}")
+  local method=$(takeMethod "${!install}")
   if [[ "$method" = git ]]; then
-    local url=$(takeRefRest "${!installVar}")
+    local url=$(takeRefRest "${!install}")
   else
     local url=${!defaultUrlVar}
   fi
@@ -299,8 +318,8 @@ export -f menuGitUrl
 
 menuGitBranch() {
   local project=$1
+  local install=$2
 
-  local installVar=${project}_INSTALL
   local nameVar=MENU_${project}_NAME
   local branchesVar=MENU_${project}_BRANCHES
   local defaultBranchVar=MENU_${project}_GIT_BRANCH_DEFAULT
@@ -316,9 +335,9 @@ Examples;
 
   # If the installation method was something other than this
   # then the defaults for this method will need to be used instead.
-  local method=$(takeMethod "${!installVar}")
+  local method=$(takeMethod "${!install}")
   if [[ "$method" = git ]]; then
-    local branch=$(takeRefFirst "${!installVar}")
+    local branch=$(takeRefFirst "${!install}")
   else
     local branch=${!defaultBranchVar}
   fi
@@ -345,17 +364,17 @@ export -f menuGitBranch
 
 menuRepository() {
   local project=$1
+  local install=$2
 
-  local installVar=${project}_INSTALL
   local nameVar=MENU_${project}_NAME
   local repositoryDefaultVar=MENU_${project}_REPOSITORY_DEFAULT
   local repositoriesVar=MENU_${project}_REPOSITORY_LIST
 
   # If the installation method was something other than this
   # then the defaults for this method will need to be used instead.
-  local method=$(takeMethod "${!installVar}")
+  local method=$(takeMethod "${!install}")
   if [[ "$method" = repository ]]; then
-    local ref=$(takeRef "${!installVar}")
+    local ref=$(takeRef "${!install}")
   else
     local ref=${!repositoryDefaultVar}
   fi
@@ -387,8 +406,8 @@ export -f menuRepository
 
 menuPhar() {
   local project=$1
+  local install=$2
 
-  local installVar=${project}_INSTALL
   local nameVar=MENU_${project}_NAME
   local versionsVar=MENU_${project}_VERSIONS
   local examplesVar=MENU_${project}_PHAR_EXAMPLES
@@ -405,8 +424,8 @@ EOM
 
   # If the installation method was something other than this
   # then the defaults for this method will need to be used instead.
-  local method=$(takeMethod "${!installVar}")
-  [[ "$method" = phar ]] && local ref=$(takeRef "${!installVar}") || local ref=${!defaultVersionVar}
+  local method=$(takeMethod "${!install}")
+  [[ "$method" = phar ]] && local ref=$(takeRef "${!install}") || local ref=${!defaultVersionVar}
 
   local numExamples=$(echo -n "${!examplesVar}" | grep -c '^')
   local totalLines=$(($numExamples + 11))

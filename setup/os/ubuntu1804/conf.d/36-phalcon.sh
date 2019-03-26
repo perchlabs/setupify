@@ -1,20 +1,29 @@
 #!/usr/bin/env bash
 # Environment variables OS_DIR and TEMP_DIR are available
 
-# You can skip Phalcon steps by exporting this.
-[[ ! -z "$SKIP_PHALCON" ]] && exit 0
+method=$(takeMethod "$PHALCON_INSTALLER")
+[[ -z "$method" ]] && exit 0
 
 echo -e "${COLOR_SECTION}*** Phalcon ***${TEXT_RESET}"
 
 cd "$TEMP_DIR"
 
+packageName="php${PHP_VERSION}-phalcon"
+
+# If the Phalcon installation method is something other than repository
+# then remove the package from the system so that it doesn't interfere
+# with other installation methods.
+if [[ "$method" != repository ]]; then
+  dpkg -s "$packageName" 2>&1 /dev/null
+  [[ $? -eq 0 ]] && sudo apt-get remove "$packageName"
+fi
+
 # Determine the method used for installing Phalcon.
-method=$(takeMethod "$PHALCON_INSTALL")
 case "$method" in
   "git")
     echo "Git cloning Phalcon repository"
-    gitBranch=$(takeRefFirst "$PHALCON_INSTALL")
-    gitUrl=$(takeRefRest "$PHALCON_INSTALL")
+    gitBranch=$(takeRefFirst "$PHALCON_INSTALLER")
+    gitUrl=$(takeRefRest "$PHALCON_INSTALLER")
 
     git clone --quiet --depth=1 -b "$gitBranch" "$gitUrl" cphalcon > /dev/null
     [[ $? -ne 0 ]] && exit 1
@@ -30,7 +39,7 @@ case "$method" in
     fi
     ;;
   "tarball")
-    ref=$(takeRef "$PHALCON_INSTALL")
+    ref=$(takeRef "$PHALCON_INSTALLER")
     downloadDir="$TEMP_DIR/phalcon"
 
     mkdir "$downloadDir"
@@ -68,7 +77,12 @@ case "$method" in
     fi
     ;;
   "repository")
-    sudo apt-get install --quiet=2 "php${PHP_VERSION}-phalcon"
+    if [[ ! -z "$SKIP_PACKAGES" ]]; then
+      echo "Skipping Phalcon package installation due to SKIP_PACKAGES being set."
+      exit 0
+    fi
+
+    sudo apt-get install --quiet=2 "$packageName"
     [[ $? -ne 0 ]] && exit 1
     ;;
   *)

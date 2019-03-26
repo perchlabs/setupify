@@ -1,18 +1,18 @@
 
 menu_nodejs() {
-  local method=$(takeMethod "$NODEJS_INSTALL")
-
-  # If method is not set then use the default.
-  if [[ -z "$method" ]] && method=$(takeMethod "$NODEJS_DEFAULT")
+  local project=NODEJS
+  local installer="${NODEJS_INSTALLER:-$NODEJS_DEFAULT}"
+  local method=$(takeMethod "$installer")
 
   local option
   option=$("$DIALOG" \
     --backtitle "$MENU_BACKTITLE" \
-    --title "Node.js Install Method" \
+    --title "Node.js Installer Method" \
     --notags \
     --default-item $method \
-    --menu "Choose the method to install Node.js." 9 60 2 \
-      "repository" "Package Repository"
+    --menu "Choose the method for installing Node.js." 9 60 2 \
+      clear "Clear Installer" \
+      repository "Package Repository" \
       3>&1 1>&2 2>&3)
   [[ $? -ne "$DIALOG_OK" ]] && return 0
 
@@ -20,15 +20,19 @@ menu_nodejs() {
   local refNew
   case "$option" in
     "repository")
-      refNew=$(menuRepository NODEJS)
+      refNew=$(menuRepository $project "$install")
       [[ $? -ne 0 ]] && return 0
       ;;
     # "tarball")
-    #   refNew=$(menuTarball NODEJS)
+    #   refNew=$(menuTarball $project "$install")
     #   [[ $? -ne 0 ]] && return 0
     #   ;;
   esac
 
-  NODEJS_INSTALL="${methodNew}:${refNew}"
+  if [[ "$option" == "clear" ]]; then
+    unset NODEJS_INSTALLER
+  else
+    NODEJS_INSTALLER="${methodNew}:${refNew}"
+  fi
 }
 export -f menu_nodejs

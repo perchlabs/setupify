@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 # Environment variables OS_DIR and TEMP_DIR are available
 
-[[ ! -z "$SKIP_PACKAGES" ]] && exit 0
+method=$(takeMethod "$PHALCON_INSTALLER")
+[[ -z "$method" ]] && exit 0
 
 # Remove existing installed Phalcon repositories.
 echo "Removing any existing Phalcon repositories"
 sudo rm -f /etc/apt/sources.list.d/phalcon*.list > /dev/null
 
 # If the Phalcon method is not 'repository' then exit
-method=$(takeMethod "$PHALCON_INSTALL")
 [[ "$method" != repository ]] && exit 0
 
 echo "Installing Phalcon repository"
-ref=$(takeRef "$PHALCON_INSTALL")
+ref=$(takeRef "$PHALCON_INSTALLER")
 
 # Create repository list file text
 read -r -d '' repositoryText << EOM

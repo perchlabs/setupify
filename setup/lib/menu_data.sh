@@ -1,5 +1,5 @@
 
-MENU_BACKTITLE="Perch Foundation Setupifier Menu v${VERSION}"
+MENU_BACKTITLE="Perch Labs Setupifier Menu v${VERSION}"
 
 # Nodejs menu.
 MENU_NODEJS_NAME=Node.js

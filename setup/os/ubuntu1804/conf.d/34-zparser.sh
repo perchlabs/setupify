@@ -2,18 +2,17 @@
 # Environment variables OS_DIR and TEMP_DIR are available
 
 # You can skip zephir_parser steps by exporting this.
-[[ ! -z "$SKIP_ZPARSER" ]] && exit 0
 
 echo -e "${COLOR_SECTION}*** zephir_parser ***${TEXT_RESET}"
 
-method=$(takeMethod "$ZPARSER_INSTALL")
+method=$(takeMethod "$ZPARSER_INSTALLER")
 cd "$TEMP_DIR"
 
 case "$method" in
   "git")
     echo "Git cloning zephir_parser repository"
-    gitBranch=$(takeRefFirst "$ZPARSER_INSTALL")
-    gitUrl=$(takeRefRest "$ZPARSER_INSTALL")
+    gitBranch=$(takeRefFirst "$ZPARSER_INSTALLER")
+    gitUrl=$(takeRefRest "$ZPARSER_INSTALLER")
 
     git clone --depth=1 -b "$gitBranch" "$gitUrl" php-zephir-parser > /dev/null
     [[ $? -ne 0 ]] && exit 1
@@ -21,7 +20,7 @@ case "$method" in
     [[ $? -ne 0 ]] && exit 1
     ;;
   "tarball")
-    ref=$(takeRef "$ZPARSER_INSTALL")
+    ref=$(takeRef "$ZPARSER_INSTALLER")
     downloadDir="$TEMP_DIR/zparser"
 
     mkdir "$downloadDir"
