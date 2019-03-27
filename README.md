@@ -124,7 +124,7 @@ The conf.d init scripts can be skipped from the provisioning steps by defining a
 [[ ! -z "$SKIP_PECL" ]] && exit 0
 ```
 
-Skipping sections can be exceedingly useful when developing new tech or testing your custom provisioning steps. If the answer to the question *"Do I really want to wait for Phalcon to compile each time?"* is a *"No!"* then consider using `SKIP_` variables. At the moment the following skip steps are available: `SKIP_PACKAGES`, `SKIP_PECL`, `SKIP_PHALCON`, `SKIP_ZCOMPILER` and `SKIP_ZPARSER`. You may define these skip steps in the parent shell or in your `settings.sh` config.
+Skipping sections can be exceedingly useful when developing new tech or testing your custom provisioning steps. If the answer to the question *"Do I really want to wait for Phalcon to compile each time?"* is a *"No!"* then consider using `SKIP_` variables. At the moment the following skip steps are available: `SKIP_PACKAGES`, `SKIP_PECL`. You may define these skip steps in the parent shell or in your `settings.sh` config.
 
 Additionally a low tech way to skip an entire conf.d init script is to temporary rename it be prefixed with the hash character. For example renaming `01-foo.sh` to `#01-foo.sh` will cause it be ignored. This is a great low tech way to debug your custom conf.d scripts.
 
