@@ -8,48 +8,48 @@ Setupify is a collection of bash scripts for provisioning a system. The included
 * As a starting point for any open source Phalcon or Zephir based tech stack
 
 #### Installer Definitions
-Setupify is based around environment variable install definitions that are exported from one of the three settings files or from the parent shell. For example the `PHALCON_INSTALL` variable describes both the method and version for installing Phalcon.  The install var is broken into two or three colon delineated sections depending on the install method.  Some install methods need more information than others.
+Setupify is based around environment variable install definitions that are exported from one of the three settings files or from the parent shell. For example the `PHALCON_INSTALLER` variable describes both the method and version for installing Phalcon.  The install var is broken into two or three colon delineated sections depending on the install method.  Some install methods need more information than others.
 
 Here is the default Phalcon install definition.  It states that Phalcon should be installed from the official stable repository.
 
 ```bash
-PHALCON_INSTALL=repository:stable
+PHALCON_INSTALLER=repository:stable
 ```
 
 Here is a Phalcon install definition for installing from the 4.0.0-alpha1 tarball from the official releases.
 
 ```bash
-PHALCON_INSTALL=tarball:4.0.0-alpha1
+PHALCON_INSTALLER=tarball:4.0.0-alpha1
 ```
 
 This installs the same version but instead uses the tarball URL.
 
 ```bash
-PHALCON_INSTALL=tarball:https://github.com/phalcon/cphalcon/archive/v4.0.0-alpha1.tar.gz
+PHALCON_INSTALLER=tarball:https://github.com/phalcon/cphalcon/archive/v4.0.0-alpha1.tar.gz
 ```
 
 It can also be used to install from a downloaded tarball.
 
 ```bash
-PHALCON_INSTALL=tarball:file:///home/dschissler/v4.0.0-alpha1.tar.gz
+PHALCON_INSTALLER=tarball:file:///home/dschissler/v4.0.0-alpha1.tar.gz
 ```
 
 Finally here is a git example.  Notice that there are three sections delineated by a colon.  Note that it reads from the left and so the colon in the `https:` is ignored.
 
 ```bash
-PHALCON_INSTALL=git:3.4.x:https://github.com/cphalcon/cphalcon.git
+PHALCON_INSTALLER=git:3.4.x:https://github.com/cphalcon/cphalcon.git
 ```
 
 For Zephir lets look at the installer method for using a PHAR program.
 
 ```bash
-ZCOMPILER_INSTALL=phar:0.11.9
+ZCOMPILER_INSTALLER=phar:0.11.9
 ```
 
 Again a full URL can be used
 
 ```bash
-ZCOMPILER_INSTALL=phar:https://github.com/phalcon/zephir/releases/download/0.11.9/zephir.phar
+ZCOMPILER_INSTALLER=phar:https://github.com/phalcon/zephir/releases/download/0.11.9/zephir.phar
 ```
 
 #### How to start
@@ -74,19 +74,19 @@ Inside the `setup/settings.sh` file you will see something like the following:
 # PHP_SAPI_LIST="cli apache2"
 
 # Manualy set the zephir_parser install.
-# ZPARSER_INSTALL=git:development:https://github.com/phalcon/php-zephir-parser.git
+# ZPARSER_INSTALLER=git:development:https://github.com/phalcon/php-zephir-parser.git
 
 # Manually set the Zephir install
-# ZCOMPILER_INSTALL=git:development:https://github.com/phalcon/zephir.git
-# ZCOMPILER_INSTALL=tarball:0.11.8
+# ZCOMPILER_INSTALLER=git:development:https://github.com/phalcon/zephir.git
+# ZCOMPILER_INSTALLER=tarball:0.11.8
 
 # Manually set the Phalcon install.
-# PHALCON_INSTALL=git:4.0.x:git@github.com:phalcon/cphalcon.git
-# PHALCON_INSTALL=git:4.0.x:https://github.com/cphalcon/cphalcon.git
-# PHALCON_INSTALL=repository:mainline
-# PHALCON_INSTALL=repository:nightly
-# PHALCON_INSTALL=tarball:4.0.0-alpha1
-# PHALCON_INSTALL=tarball:https://github.com/phalcon/cphalcon/archive/v4.0.0-alpha1.tar.gz
+# PHALCON_INSTALLER=git:4.0.x:git@github.com:phalcon/cphalcon.git
+# PHALCON_INSTALLER=git:4.0.x:https://github.com/cphalcon/cphalcon.git
+# PHALCON_INSTALLER=repository:mainline
+# PHALCON_INSTALLER=repository:nightly
+# PHALCON_INSTALLER=tarball:4.0.0-alpha1
+# PHALCON_INSTALLER=tarball:https://github.com/phalcon/cphalcon/archive/v4.0.0-alpha1.tar.gz
 ```
 
 You can comment out any line to change the setting. You won't need to do an `export` call on these lines since these files are sourced with `set -a`. You may export any of these values from a parent shell and they will be used unless overridden.
@@ -94,7 +94,7 @@ You can comment out any line to change the setting. You won't need to do an `exp
 For example enter the following shell commands to change the Phalcon repository to `mainline` without modifying `setup/settings.sh`:
 
 ```
-dschissler@setupify:~/setupify$ export PHALCON_INSTALL=repository:mainline
+dschissler@setupify:~/setupify$ export PHALCON_INSTALLER=repository:mainline
 dschissler@setupify:~/setupify$ ./setup/provision.sh ubuntu1804
 ```
 
@@ -188,7 +188,7 @@ First create an empty `setup/lib/menu/helloworld.sh` file. The file does't need 
 Finally run the following commands in your terminal.
 
 ```bash
-export HELLOWORLD_INSTALL=tarball:5.1.4
+export HELLOWORLD_INSTALLER=tarball:5.1.4
 ./setup/menu.sh ubuntu1804
 ```
 
