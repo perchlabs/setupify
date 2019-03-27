@@ -199,7 +199,7 @@ Notice the `HELLOWORLD` in the status section as well as the `helloworld` menu i
 Note: This is a hack to quickly demonstrate how to add new setupify functionality. To do this properly you will need to follow the conventions laid out in `setup/lib/data.sh`. Additionally, you will most likely want to copy an existing menu file as your starting point.
 
 #### License
-Setupify is licensed under the terms of LGPL. This license allows you to use the software for evil machinations. However, it is hoped that you will offer your Bash fixes to the Brotherhood of Spiritual Code Stewardship, hereafter referred to as the Brotherhood or BOSCS. If you do fix something real clever-like and don't offer to help the Brotherhood, then that is fine I guess but kind of a dick move if you ask me.
+Setupify is licensed under the terms of LGPL.
 
 #### The Book
 
