@@ -7,4 +7,7 @@
 echo "Updating package cache again (for PPAs)"
 sudo apt-get update --quiet=2
 
+list=$(readlist package)
+sudo apt-get install --quiet=2 $list
+
 exit 0
