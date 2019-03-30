@@ -1,6 +1,7 @@
 
 menuInit() {
   export DIALOG=$(which dialog whiptail 2> /dev/null | head -n 1)
+  # export DIALOG=$(which whiptail dialog 2> /dev/null | head -n 1)
   if [[ -z "$DIALOG" ]]; then
     >&2 echo "The dialog or whiptail command could not be found."
     exit 1
@@ -166,17 +167,17 @@ export -f menuCustomize
 
 
 printInstallerStatus() {
-  local installArr=($(compgen -v | grep -e '_INSTALLER$'))
-  local installCount=${#installArr[@]}
+  local installerArr=($(compgen -v | grep -e '_INSTALLER$'))
+  local installerCount=${#installerArr[@]}
   local nameArr=()
   local regex='(.+)_INSTALLER$'
 
-  local installVar
+  local installerVar
   local maxLen=0
   local len
   local name
-  for installVar in ${installArr[@]}; do
-    [[ "$installVar" =~ $regex ]] && name=${BASH_REMATCH[1]}
+  for installerVar in ${installerArr[@]}; do
+    [[ "$installerVar" =~ $regex ]] && name=${BASH_REMATCH[1]}
     nameArr+=($name)
     len=${#name}
     maxLen=$(( len > maxLen ? len : maxLen ))
@@ -186,19 +187,19 @@ printInstallerStatus() {
   printf "%${maxLen}s" PHP
   echo ": $PHP_VERSION"
 
-  let outputLineCount=$((installCount + 1))
+  let outputLineCount=$((installerCount + 1))
 
-  if [[ "$installCount" -eq 0 ]]; then
+  if [[ "$installerCount" -eq 0 ]]; then
     outputLineCount=$((outputLineCount + 1))
     echo "No installers are configured"
   else
     for i in ${!nameArr[@]}; do
-      installVar=${installArr[$i]}
+      installerVar=${installerArr[$i]}
       name=${nameArr[$i]}
 
       printf "%${maxLen}s" $name
       printf ": "
-      [[ -z "${!installVar}" ]] && echo "---" || echo "${!installVar}"
+      [[ -z "${!installerVar}" ]] && echo "---" || echo "${!installerVar}"
     done
   fi
 
@@ -210,7 +211,7 @@ export -f printInstallerStatus
 
 menuTarball() {
   local project=$1
-  local install=$2
+  local installer=$2
 
   local nameVar=MENU_${project}_NAME
   local versionsVar=MENU_${project}_VERSIONS
@@ -227,8 +228,8 @@ Examples; ${!examplesVar}
 
   # If the installation method was something other than this
   # then the defaults for this method will need to be used instead.
-  local method=$(takeMethod "${!install}")
-  [[ "$method" = tarball ]] && local ref=$(takeRef "${!install}") || local ref=${!defaultVersionVar}
+  local method=$(takeMethod "$installer")
+  [[ "$method" = tarball ]] && local ref=$(takeRef "$installer") || local ref="${!defaultVersionVar}"
 
   local numExamples=$(echo -n "${!examplesVar}" | grep -c '^')
   local totalLines=$(($numExamples + 12))
@@ -254,7 +255,7 @@ export -f menuTarball
 
 menuGit() {
   local project=$1
-  local install=$2
+  local installer=$2
 
   local url
   url=$(menuGitUrl "$project")
@@ -271,7 +272,7 @@ export -f menuGit
 
 menuGitUrl() {
   local project=$1
-  local install=$2
+  local installer=$2
 
   local nameVar=MENU_${project}_NAME
   local defaultUrlVar=MENU_${project}_GIT_URL_DEFAULT
@@ -285,9 +286,9 @@ Examples;
 
   # If the installation method was something other than this
   # then the defaults for this method will need to be used instead.
-  local method=$(takeMethod "${!install}")
+  local method=$(takeMethod "$installer")
   if [[ "$method" = git ]]; then
-    local url=$(takeRefRest "${!install}")
+    local url=$(takeRefRest "$installer")
   else
     local url=${!defaultUrlVar}
   fi
@@ -314,7 +315,7 @@ export -f menuGitUrl
 
 menuGitBranch() {
   local project=$1
-  local install=$2
+  local installer=$2
 
   local nameVar=MENU_${project}_NAME
   local branchesVar=MENU_${project}_BRANCHES
@@ -331,9 +332,9 @@ Examples;
 
   # If the installation method was something other than this
   # then the defaults for this method will need to be used instead.
-  local method=$(takeMethod "${!install}")
+  local method=$(takeMethod "$installer")
   if [[ "$method" = git ]]; then
-    local branch=$(takeRefFirst "${!install}")
+    local branch=$(takeRefFirst "$installer")
   else
     local branch=${!defaultBranchVar}
   fi
@@ -360,7 +361,7 @@ export -f menuGitBranch
 
 menuRepository() {
   local project=$1
-  local install=$2
+  local installer=$2
 
   local nameVar=MENU_${project}_NAME
   local repositoryDefaultVar=MENU_${project}_REPOSITORY_DEFAULT
@@ -368,9 +369,9 @@ menuRepository() {
 
   # If the installation method was something other than this
   # then the defaults for this method will need to be used instead.
-  local method=$(takeMethod "${!install}")
+  local method=$(takeMethod "$installer")
   if [[ "$method" = repository ]]; then
-    local ref=$(takeRef "${!install}")
+    local ref=$(takeRef "$installer")
   else
     local ref=${!repositoryDefaultVar}
   fi
@@ -402,7 +403,7 @@ export -f menuRepository
 
 menuPhar() {
   local project=$1
-  local install=$2
+  local installer=$2
 
   local nameVar=MENU_${project}_NAME
   local versionsVar=MENU_${project}_VERSIONS
@@ -420,8 +421,8 @@ EOM
 
   # If the installation method was something other than this
   # then the defaults for this method will need to be used instead.
-  local method=$(takeMethod "${!install}")
-  [[ "$method" = phar ]] && local ref=$(takeRef "${!install}") || local ref=${!defaultVersionVar}
+  local method=$(takeMethod "$installer")
+  [[ "$method" = phar ]] && local ref=$(takeRef "$installer") || local ref="${!defaultVersionVar}"
 
   local numExamples=$(echo -n "${!examplesVar}" | grep -c '^')
   local totalLines=$(($numExamples + 11))

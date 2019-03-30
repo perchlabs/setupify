@@ -20,7 +20,6 @@ EOM
     --backtitle "$MENU_BACKTITLE" \
     --title "Zephir Installer Method" \
     --notags \
-    --no-collapse \
     --default-item $method \
     --cancel-button "Return to Overview" \
     --menu "$msg" 17 80 4 \
