@@ -24,10 +24,21 @@ initCommon() {
   set -a
   source "$SETUP_ROOT_DIR/settings.sh"
   source "$LIB_DIR/data.sh"
+
+  # Load a data file for each section.
+  local sectionNames=$(getSectionNames)
+  local sectionName
+  for sectionName in $sectionNames; do
+    local sectionDataPath="$LIB_DIR/section/${sectionName}/data.sh"
+    if [[ -f "$sectionDataPath" ]]; then
+      source "$sectionDataPath"
+    fi
+  done
   set +a
 
   [[ ! -z "$shouldLoadInstallers" ]] && loadInstallers
 
+  # Load operating system settings.
   set -a
   source "$OS_DIR/os.sh"
   set +a
@@ -36,15 +47,28 @@ export -f initCommon
 
 
 loadInstallers() {
+  local defaultVarList=$(compgen -v | grep -E '^[A-Z]+_DEFAULT$')
+  local regex="(.+)_DEFAULT$"
+  local defaultVar
+  local installerVar
+  local section
+
   set -a
-  source "$LIB_DIR/data_installer.sh"
+  for defaultVar in $defaultVarList; do
+    [[ "$defaultVar" =~ $regex ]] && installerVar="${BASH_REMATCH[1]}_INSTALLER"
+
+    local installerVal="${!installerVar}"
+    local installerDefault="${!defaultVar}"
+
+    declare -g $installerVar="${installerVal:-$installerDefault}"
+  done
   set +a
 }
 export -f loadInstallers
 
 
 clearInstallers() {
-  local installVarList=$(compgen -v | grep -e '_INSTALLER$')
+  local installVarList=$(compgen -v | grep -E '^[A-Z]+_INSTALLER$')
   local installVar
 
   set -a
@@ -79,6 +103,16 @@ startInstallation() {
   printf "${COLOR_NOTICE}SUCCESS!\n${TEXT_RESET}"
 }
 export -f startInstallation
+
+
+getSectionNames() {
+  local sectionNames
+  sectionNames=$(ls -d "$LIB_DIR"/section/*/ | xargs -n 1 basename)
+  [[ $? -ne 0 ]] && return 1
+
+  echo $sectionNames
+}
+export -f getSectionNames
 
 
 readlist() {

@@ -14,10 +14,10 @@ menu_skips() {
 
   # Create an array of all set skips.
   local skipNameArr=()
-  local skipVarList=$(compgen -v | grep -e '^SKIP_')
+  local skipVarList=$(compgen -v | grep -E '^SKIP_[A-Z]+$')
   local regex='^SKIP_(.+)$'
   for skipVar in $skipVarList; do
-    [[ "$skipVar" =~ $regex ]] && skipNameArr+=("${BASH_REMATCH[1]}")
+    [[ "$skipVar" =~ $regex ]] && skipNameArr+=($BASH_REMATCH[1])
   done
 
   # Create the triplet tuples for the checklist dialog.

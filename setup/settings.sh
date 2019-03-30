@@ -18,12 +18,8 @@
 # PHALCON_INSTALLER=tarball:4.0.0-alpha1
 # PHALCON_INSTALLER=tarball:https://github.com/phalcon/cphalcon/archive/v4.0.0-alpha1.tar.gz
 
-
 # SKIP_PACKAGES=1
-# SKIP_PHALCON=1
 # SKIP_PECL=1
-# SKIP_ZPARSER=1
-# SKIP_ZCOMPILER=1
 
 # ZCOMPILER_INSTALLER=tarball:0.11.8
 # ZCOMPILER_INSTALLER=tarball:0.11.9

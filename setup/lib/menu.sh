@@ -49,16 +49,21 @@ export -f menuOsname
 menuStart() {
   # Load menu data.
   set -a
+
   source "$LIB_DIR/menu_data.sh"
-  set +a
 
   local menuCustomList
   local fileName
-  local fileNames=$(find "$LIB_DIR"/menu/*.sh -printf "%f\n")
-  for fileName in $fileNames; do
-    source "$LIB_DIR/menu/$fileName"
-    menuCustomList="$menuCustomList ${fileName%%.*}"
+  local sectionName
+  local sectionNames=$(getSectionNames)
+  for sectionName in $sectionNames; do
+    local sectionPathFrag="${sectionName}/menu_${sectionName}.sh"
+    source "$LIB_DIR/section/$sectionPathFrag"
+
+    menuCustomList="$menuCustomList $sectionName"
   done
+
+  set +a
 
   local choice
   while true; do
@@ -167,7 +172,7 @@ export -f menuCustomize
 
 
 printInstallerStatus() {
-  local installerArr=($(compgen -v | grep -e '_INSTALLER$'))
+  local installerArr=($(compgen -v | grep -E '[A-Z]+_INSTALLER$'))
   local installerCount=${#installerArr[@]}
   local nameArr=()
   local regex='(.+)_INSTALLER$'
