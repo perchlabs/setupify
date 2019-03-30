@@ -9,5 +9,9 @@ sudo apt-get update --quiet=2
 
 list=$(readlist package)
 sudo apt-get install --quiet=2 $list
+if [[ $? -ne 0 ]]; then
+  >&2 echo "Unable to install system packages."
+  exit 1
+fi
 
 exit 0
