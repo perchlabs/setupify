@@ -59,10 +59,6 @@ menuStart() {
     menuCustomList="$menuCustomList ${fileName%%.*}"
   done
 
-  # menu_nodejs
-  # exit
-
-
   local choice
   while true; do
     choice=$(menuOverview)
@@ -96,7 +92,7 @@ export -f menuStart
 
 menuOverview() {
   local status
-  status=$(printInstallStatus)
+  status=$(printInstallerStatus)
   local statusLines=$?
 
   local msg
@@ -106,7 +102,7 @@ Would you like to install using the current settings?
 $status
 EOM
 
-    local totalLines=$(($statusLines + 12))
+    local totalLines=$(($statusLines + 13))
     local option
     option=$("$DIALOG" \
       --backtitle "$MENU_BACKTITLE" \
@@ -130,7 +126,7 @@ menuCustomize() {
   local menuList="$1"
 
   local status
-  status=$(printInstallStatus)
+  status=$(printInstallerStatus)
   local statusLines=$?
 
   local msg
@@ -152,7 +148,7 @@ EOM
 
   local itemArr=($menuList)
   local numItems=${#itemArr[@]}
-  local totalLines=$(($statusLines + $numItems + 8))
+  local totalLines=$(($statusLines + $numItems + 9))
   totalLines=$(($totalLines > 24 ? 24 : $totalLines))
   local option
   option=$("$DIALOG" \
@@ -169,7 +165,7 @@ EOM
 export -f menuCustomize
 
 
-printInstallStatus() {
+printInstallerStatus() {
   local installArr=($(compgen -v | grep -e '_INSTALLER$'))
   local installCount=${#installArr[@]}
   local nameArr=()
@@ -209,7 +205,7 @@ printInstallStatus() {
   # Return the number of status lines
   return $outputLineCount
 }
-export -f printInstallStatus
+export -f printInstallerStatus
 
 
 menuTarball() {

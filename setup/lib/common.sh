@@ -37,7 +37,7 @@ export -f initCommon
 
 loadInstallers() {
   set -a
-  source "$LIB_DIR/data_install.sh"
+  source "$LIB_DIR/data_installer.sh"
   set +a
 }
 export -f loadInstallers
