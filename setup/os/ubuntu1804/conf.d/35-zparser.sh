@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 # Environment variables OS_DIR and TEMP_DIR are available
 
-# You can skip zephir_parser steps by exporting this.
-
 echo -e "${COLOR_SECTION}*** zephir_parser ***${TEXT_RESET}"
 
 method=$(takeMethod "$ZPARSER_INSTALLER")

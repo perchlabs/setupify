@@ -1,7 +1,7 @@
 
 initCommon() {
   local osName=$1
-  local shouldLoadInstallers=$2
+  local shouldPerformMaximumSteps=$2
 
   if [[ -z "$osName" ]]; then
     >&2 echo "An OS name must be specified for installation."
@@ -25,6 +25,15 @@ initCommon() {
   source "$SETUP_ROOT_DIR/settings.sh"
   source "$LIB_DIR/data.sh"
 
+  # Define interests while preserving existing values.
+  local interestName
+  local interestVar
+  for interestName in ${INTEREST_DEFINITIONS[@]}; do
+    interestVar="${interestName}_INTEREST"
+    declare -g $interestVar=${!interestVar}
+    export "$interestVar"
+  done
+
   # Load a data file for each section.
   local sectionNames=$(getSectionNames)
   local sectionName
@@ -36,7 +45,10 @@ initCommon() {
   done
   set +a
 
-  [[ ! -z "$shouldLoadInstallers" ]] && loadInstallers
+  if [[ ! -z "$shouldPerformMaximumSteps" ]]; then
+    loadInstallers
+    enableAllInterests
+  fi
 
   # Load operating system settings.
   set -a
@@ -78,6 +90,34 @@ clearInstallers() {
   set +a
 }
 export -f clearInstallers
+
+
+enableAllInterests() {
+  set -a
+
+  local interestVarList=$(compgen -v | grep -E '^[A-Z]+_INTEREST$')
+  local regex='^(.+)_INTEREST$'
+  for interestVar in $interestVarList; do
+    declare -g $interestVar=1
+  done
+
+  set +a
+}
+export -f enableAllInterests
+
+
+disableAllInterests() {
+  set -a
+
+  local interestVarList=$(compgen -v | grep -E '^[A-Z]+_INTEREST$')
+  local regex='^(.+)_INTEREST$'
+  for interestVar in $interestVarList; do
+    declare -g $interestVar=''
+  done
+
+  set +a
+}
+export -f disableAllInterests
 
 
 startInstallation() {

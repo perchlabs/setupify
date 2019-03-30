@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 # Environment variables OS_DIR and TEMP_DIR are available
 
-# You can skip Zephir compiler steps by exporting this.
-[[ ! -z "$SKIP_ZCOMPILER" ]] && exit 0
-
 echo -e "${COLOR_SECTION}*** Zephir ***${TEXT_RESET}"
 
 method=$(takeMethod "$ZCOMPILER_INSTALLER")

@@ -56,11 +56,6 @@ case "$method" in
   #   [[ $? -ne 0 ]] && exit 1
   #   ;;
   "repository")
-    if [[ ! -z "$SKIP_PACKAGES" ]]; then
-      echo "Skipping Node.js package installation due to SKIP_PACKAGES being set."
-      exit 0
-    fi
-
     sudo apt-get install --quiet=2 "$packageName"
     [[ $? -ne 0 ]] && exit 1
     ;;

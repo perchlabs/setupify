@@ -48,21 +48,19 @@ export -f menuOsname
 
 menuStart() {
   # Load menu data.
-  set -a
-
-  source "$LIB_DIR/menu_data.sh"
 
   local menuCustomList
   local fileName
   local sectionName
   local sectionNames=$(getSectionNames)
+
+  set -a
   for sectionName in $sectionNames; do
     local sectionPathFrag="${sectionName}/menu_${sectionName}.sh"
     source "$LIB_DIR/section/$sectionPathFrag"
 
     menuCustomList="$menuCustomList $sectionName"
   done
-
   set +a
 
   local choice
@@ -83,9 +81,11 @@ menuStart() {
         ;;
       "load_installers")
         loadInstallers
+        enableAllInterests
         ;;
       "clear_installers")
         clearInstallers
+        disableAllInterests
         ;;
       *)
         exit 0
@@ -119,8 +119,8 @@ EOM
       --menu "$msg" $totalLines 110 4 \
         install Install \
         customize Customize \
-        load_installers 'Load All Installers' \
-        clear_installers 'Clear All Installers' \
+        load_installers 'Load everything' \
+        clear_installers 'Clear everything' \
     3>&1 1>&2 2>&3)
     [[ $? -ne "$DIALOG_OK" ]] && return 1
     echo $option

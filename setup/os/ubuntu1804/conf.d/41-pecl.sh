@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Environment variables OS_DIR and TEMP_DIR are available
 
-[[ ! -z "$SKIP_PECL" ]] && exit 0
+[[ -z "$PECL_INTEREST" ]] && exit 0
 
 echo -e "${COLOR_SECTION}*** PECL extensions ***${TEXT_RESET}"
 

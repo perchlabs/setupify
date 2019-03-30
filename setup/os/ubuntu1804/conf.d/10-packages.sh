@@ -1,17 +1,20 @@
 #!/usr/bin/env bash
 # Environment variables OS_DIR and TEMP_DIR are available
 
-[[ ! -z "$SKIP_PACKAGES" ]] && exit 0
-
 echo -e "${COLOR_SECTION}*** System Packages ***${TEXT_RESET}"
 
-# Some hosted VMs start without a package cache.
+# First update for VMs that begin without a package cache.
+# Also update for packages which are supplied by external repository.
 echo "Updating package cache"
 sudo apt-get update --quiet=2 > /dev/null
 if [[ $? -ne 0 ]]; then
   >&2 echo "Unable to update the package cache."
   exit 1
 fi
+
+# The package cache has been update so if there is no interest
+# in packages then we can skip expensive operations .
+[[ -z "$PACKAGES_INTEREST" ]] && exit 0
 
 # Upgrade the installed packages.
 echo "Upgrading packages"
