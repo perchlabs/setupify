@@ -115,16 +115,15 @@ The `conf.d/` directory is filled with number ordered executable scripts. For ex
 
 Out of the box the init scripts currently installs; system packages, PECL packages, zephir_parser, Zephir and Phalcon. At the moment you will need to setup a database and web server yourself. There are just two many combinations for an initial release.
 
-**Skip Sections**
+**Interest Sections**
 
-The conf.d init scripts can be skipped from the provisioning steps by defining a `SKIP_` environment variable. For example to skip PECL downloading, compiling and installation you can define `SKIP_PECL=1` in the parent shell or setting files.  Here is a look at the top of the `31-pecl.sh` conf.d script as an example of how it is skipped.
+You can define "interests" environment variables for conf.d init scripts in the form `*_INTEREST`. For example to enable PECL downloading, compiling and installation by defining `PECL_INTEREST=1` in the parent shell or setting files.  Here is an example of what happens when an interest is not defined.
 
 ```bash
-#!/usr/bin/env bash
-[[ ! -z "$SKIP_PECL" ]] && exit 0
+[[ -z "$PECL_INTEREST" ]] && exit 0
 ```
 
-Skipping sections can be exceedingly useful when developing new tech or testing your custom provisioning steps. If the answer to the question *"Do I really want to wait for Phalcon to compile each time?"* is a *"No!"* then consider using `SKIP_` variables. At the moment the following skip steps are available: `SKIP_PACKAGES`, `SKIP_PECL`. You may define these skip steps in the parent shell or in your `settings.sh` config.
+Being able to manually define interests can be exceedingly useful when developing new tech or testing your custom provisioning steps. If the answer to the question *"Do I really want to wait for my PECL PHP extensions to compile each time?"* is a *"No!"* then consider not turning on the interests steps. At the moment the following interest steps are available: `PACKAGES_INTEREST`, `PECL_INTEREST`. You may define these interests in the parent shell or in your `settings.sh` config.
 
 Additionally a low tech way to skip an entire conf.d init script is to temporary rename it be prefixed with the hash character. For example renaming `01-foo.sh` to `#01-foo.sh` will cause it be ignored. This is a great low tech way to debug your custom conf.d scripts.
 
@@ -169,7 +168,7 @@ Next configure the zephir_parser installer.  Choose the default git options the 
 
 ![Zephir Git Branch](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.1/zparser-method.png)
 
-Finally we'll want to skip the `PACKAGES` and `PECL` related provision steps and so we'll check those two options. This sets the environment variables `SKIP_PACKAGESS=1` and `SKIP_PECL=1`. In this example we have already installed the system packags and compiled the PECL extensions and so skipping it will save time. This is most useful when developing so that you don't need to continually wait for irrelevant steps. If you are going to be performing an operation a great many times then you should store the `SKIP_` setting in `setup/settings.sh` so that you don't need to set it for each provisioning.
+Finally we'll want to skip the `PACKAGES` and `PECL` related provision steps and so we'll make sure that those two interests are unchecked.  In this example we have already installed the system packags and compiled the PECL extensions and so skipping these "interests" will save time. This is most useful when developing so that you don't need to continually wait for irrelevant steps.
 
 ![Zephir Git Branch](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.1/skips.png)
 
