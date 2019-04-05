@@ -132,21 +132,25 @@ Additionally a low tech way to skip an entire conf.d init script is to temporary
 Sometimes your init scripts will fail.  If any init script exits with a value other than `0` then the provisioning will be halted with an error message of the offending script.
 
 ### Menu Assisted Provisioning
-Setupify includes a powerful `dialog` or `whiptail` menu system that acts a help wizard as well as a tutorial on advantage usage. To run the menu program call `./setup/menu.sh`.
+Setupify includes a powerful `dialog` or `whiptail` menu system that acts a help wizard as well as a tutorial on advantage usage. To run the menu program call
+
+`./setup/menu.sh`.
 
 You will see a screen for choosing the operating system.
 
 ![Setupify Menu Overview](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/choose-os.png)
 
-You may bypass this screen by supplying the operating system from the command line ex; `./setup/menu.sh ubuntu1804`.
+You may bypass this screen by supplying the operating system from the command line
+
+`./setup/menu.sh ubuntu1804`.
 
 Next you will see the overview screen. Select the *"Load Everything"* entry.
 
 ![Setupify Menu Overview](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/overview-load-everything.png)
 
-Here you can review the current install settings. If you choose "Install" it will enter the automated provisioning in the exact same way as if you ran `./setup/provision.sh ubuntu1804`.  You can customize the defaults by choosing the *"Customize"* menu item.
+You can review the settings before installing. If you choose "Install" it will enter the automated provisioning in the exact same way as if you ran `./setup/provision.sh ubuntu1804`.  You can customize the defaults by choosing the *"Customize"* menu item.
 
-We'll first customize the *"Phalcon"* menu.
+We'll first customize the *"Phalcon"* installer.
 
 ![Setupify Customize Overview](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/customize-hover-phalcon.png)
 
@@ -158,7 +162,7 @@ We'll choose the nightly channel. This is an easy way to get the latest Phalcon 
 
 ![Phalcon Repository Channel](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/phalcon-repository.png)
 
-Since we're developing a PHP extension that uses the latest Zephir language features we're going to want the latest tech. 
+Since we're developing a PHP extension that uses the latest Zephir language features we're going to want the latest tech.
 
 We'll choose the "Git" installaton method.
 
