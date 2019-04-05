@@ -4,7 +4,7 @@ Setupify is a collection of bash scripts for provisioning a system. The included
 
 #### Intended Uses
 
-* Quick and flexible provisioning of a Zephir/Phalcon testing or development environment
+* Quick and flexible provisioning of a Zephir/Phalcon environment for development or testing.
 * As a starting point for provisioning a prioprietary application stack. In this case its a simple matter to delete sections and files before starting your enhancements.
 * As a starting point for any open source Phalcon or Zephir based tech stack
 
@@ -25,7 +25,7 @@ So you would run `./setup/provision.sh ubuntu1804` to start the automated provis
 
 ### Menu Assisted Provisioning
 
-Setupify includes a powerful `dialog` or `whiptail` menu system that acts a help wizard as well as a tutorial on advantage usage. To run the menu program call:
+Setupify includes a powerful `dialog` or `whiptail` menu wizard. To run the menu program call:
 
 `./setup/menu.sh`
 
@@ -41,13 +41,13 @@ Next you will see the overview screen. Select the *"Load Everything"* entry.
 
 ![Setupify Menu Overview](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/overview-load-everything.png)
 
-You can review the settings before installing. If you choose *"Install"* it will enter the automated provisioning in the exact same way as if you ran `./setup/provision.sh ubuntu1804`.
+If you choose *"Install"* it will enter the automated provisioning in the exact same way as if you ran `./setup/provision.sh ubuntu1804`.
 
-We'll choose the *"Customize"* menu item.
+We'll choose the *"Customize"* menu item. Notice how the installers are now defined.
 
 ![Setupify Customize Overview](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/overview-customize.png)
 
-We'll customize the *"Phalcon"* installer.
+We'll customize the *"Phalcon"* installer. So *Overview* --> *Customize* --> *Phalcon*.
 
 ![Setupify Customize Overview](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/customize-hover-phalcon.png)
 
@@ -61,7 +61,7 @@ We'll choose the nightly channel. This is an easy way to get the latest Phalcon 
 
 Since we're developing a PHP extension that uses the latest Zephir language features we're going to want the latest tech.
 
-We'll choose the "Git" installaton method.
+We'll choose the *"Git"* installaton method.
 
 ![Zephir Install Method](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/zcompiler-method.png)
 
@@ -81,7 +81,7 @@ Now make sure the `PACKAGES` and `PECL` check boxes are deselected. This will sk
 
 ![Zephir Git Branch](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/interests-all-unchecked.png)
 
-Finally return to the Overview screen. Notice that the installer methods are different than they first appeared. You are now ready to installer using the non-default methods.
+Finally return to the Overview screen. Notice that the installer methods are different than they first appeared. You are now ready to provision using the non-default methods.
 
 ![Zephir Git Branch](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/overview-hover-ready-install.png)
 
