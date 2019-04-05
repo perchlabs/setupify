@@ -132,49 +132,57 @@ Additionally a low tech way to skip an entire conf.d init script is to temporary
 Sometimes your init scripts will fail.  If any init script exits with a value other than `0` then the provisioning will be halted with an error message of the offending script.
 
 ### Menu Assisted Provisioning
-Setupify includes a powerful `dialog` or `whiptail` menu system that acts a help wizard as well as a tutorial on advantage usage. To run the menu program call `./setup/menu.sh ubuntu1804`.
+Setupify includes a powerful `dialog` or `whiptail` menu system that acts a help wizard as well as a tutorial on advantage usage. To run the menu program call `./setup/menu.sh`.
 
-You will see the overview screen.
+You will see a screen for choosing the operating system.
 
-![Setupify Menu Overview](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.1/overview.png)
+![Setupify Menu Overview](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/choose-os.png)
 
-Here you can review the current install settings. If you choose "Install" it will enter the automated provisioning in the exact same way as if you ran `./setup/provision.sh ubuntu1804`.  If you choose "Customize" then it will load a customization menu with an item for every file in the `./setup/lib/menu/` directory.
+You may bypass this screen by supplying the operating system from the command line ex; `./setup/menu.sh ubuntu1804`.
 
-![Setupify Customize Overview](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.1/customize.png)
+Next you will see the overview screen. Select the *"Load Everything"* entry.
 
-We'll first customize the Phalcon menu. Phalcon may be installed from; the official repository, tarball or git repository.
+![Setupify Menu Overview](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/overview-load-everything.png)
 
-![Phalcon Install Method](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.1/phalcon-method.png)
+Here you can review the current install settings. If you choose "Install" it will enter the automated provisioning in the exact same way as if you ran `./setup/provision.sh ubuntu1804`.  You can customize the defaults by choosing the *"Customize"* menu item.
 
-To start with we'll explore the repository options. We'll choose the nightly channel.
+We'll first customize the *"Phalcon"* menu.
 
-![Phalcon Repository Channel](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.1/phalcon-repository.png)
+![Setupify Customize Overview](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/customize-hover-phalcon.png)
 
-Since we're developing a PHP extension that uses the latest Zephir language features we're going to want the latest tech straight out of the unfiltered mind of the demented Sergei Iakovlev.
+Phalcon may be installed from; the official repository, tarball or git repository. We'll choose the respository method.
+
+![Phalcon Install Method](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/phalcon-method.png)
+
+We'll choose the nightly channel. This is an easy way to get the latest Phalcon code.
+
+![Phalcon Repository Channel](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/phalcon-repository.png)
+
+Since we're developing a PHP extension that uses the latest Zephir language features we're going to want the latest tech. 
 
 We'll choose the "Git" installaton method.
 
-![Zephir Install Method](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.1/zcompiler-method.png)
+![Zephir Install Method](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/zcompiler-method.png)
 
 Enter the URL to the Zephir git repository. The default value should be the official Zephir location. If you were working on improving Zephir then you could choose your own forked repository.
 
-![Zephir Git Url](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.1/zcompiler-git-url.png)
+![Zephir Git Url](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/zcompiler-git-url.png)
 
 Choose the default "development" repository.
 
-![Zephir Git Branch](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.1/zcompiler-git-branch.png)
+![Zephir Git Branch](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/zcompiler-git-branch.png)
 
-Next configure the zephir_parser installer.  Choose the default git options the same as the Zephir compiler.
+In this example we'll pretend that we've already provisioned the system and so we'll want to skip some of the time intensive operations. Choose the *"Interests"* item from the *"Customize"* menu.
 
-![Zephir Git Branch](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.1/zparser-method.png)
+![Zephir Git Branch](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/customize-hover-interests.png)
 
-Finally we'll want to skip the `PACKAGES` and `PECL` related provision steps and so we'll make sure that those two interests are unchecked.  In this example we have already installed the system packags and compiled the PECL extensions and so skipping these "interests" will save time. This is most useful when developing so that you don't need to continually wait for irrelevant steps.
+Now make sure the `PACKAGES` and `PECL` check boxes are deselected. This will skip some some unnecessary steps. This is most useful when developing so that you don't need to continually wait for irrelevant processes.
 
-![Zephir Git Branch](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.1/skips.png)
+![Zephir Git Branch](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/interests-all-unchecked.png)
 
 Finally return to the Overview screen. Notice that the install methods are different than they first appeared. You are now ready to install using the non-default methods.
 
-![Zephir Git Branch](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.1/overview-final.png)
+![Zephir Git Branch](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/overview-hover-ready-install.png)
 
 #### Create Custom Menus
 
