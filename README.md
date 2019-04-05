@@ -148,7 +148,11 @@ Next you will see the overview screen. Select the *"Load Everything"* entry.
 
 ![Setupify Menu Overview](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/overview-load-everything.png)
 
-You can review the settings before installing. If you choose "Install" it will enter the automated provisioning in the exact same way as if you ran `./setup/provision.sh ubuntu1804`.  You can customize the defaults by choosing the *"Customize"* menu item.
+You can review the settings before installing. If you choose *"Install"* it will enter the automated provisioning in the exact same way as if you ran `./setup/provision.sh ubuntu1804`.
+
+We'll choose the *"Customize"* menu item to customize our installers and interests.
+
+![Setupify Customize Overview](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/overview-customize.png)
 
 We'll first customize the *"Phalcon"* installer.
 
@@ -172,7 +176,7 @@ Enter the URL to the Zephir git repository. The default value should be the offi
 
 ![Zephir Git Url](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/zcompiler-git-url.png)
 
-Choose the default "development" repository.
+Choose the default *"development"* repository.
 
 ![Zephir Git Branch](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/zcompiler-git-branch.png)
 
