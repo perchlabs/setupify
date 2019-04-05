@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 # Environment variables OS_DIR and TEMP_DIR are available
 
+method=$(takeMethod "$ZPARSER_INSTALLER")
+[[ -z "$method" ]] && exit 0
+
 echo -e "${COLOR_SECTION}*** zephir_parser ***${TEXT_RESET}"
 
-method=$(takeMethod "$ZPARSER_INSTALLER")
 cd "$TEMP_DIR"
 
 case "$method" in

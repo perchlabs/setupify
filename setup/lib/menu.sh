@@ -166,7 +166,10 @@ EOM
       $pairs \
     3>&1 1>&2 2>&3)
   [[ $? -ne "$DIALOG_OK" ]] && return 1
+
+  set -a
   "menu_${option}"
+  set +a
 }
 export -f menuCustomize
 

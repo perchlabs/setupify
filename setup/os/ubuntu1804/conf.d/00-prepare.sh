@@ -10,4 +10,7 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
+# Create the tool install directories if they don't exist.
+mkdir -p ~/bin/ "$SOFTWARE_INSTALL_ROOT"
+
 exit 0

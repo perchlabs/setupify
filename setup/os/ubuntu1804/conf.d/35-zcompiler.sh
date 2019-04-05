@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 # Environment variables OS_DIR and TEMP_DIR are available
 
+method=$(takeMethod "$ZCOMPILER_INSTALLER")
+[[ -z "$method" ]] && exit 0
+
 echo -e "${COLOR_SECTION}*** Zephir ***${TEXT_RESET}"
 
-method=$(takeMethod "$ZCOMPILER_INSTALLER")
-mkdir -p ~/bin/ "$SOFTWARE_INSTALL_ROOT"
 symlinkPath=~/bin/zephir
 
 cd "$TEMP_DIR"
