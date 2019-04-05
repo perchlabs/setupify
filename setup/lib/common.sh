@@ -135,6 +135,7 @@ startInstallation() {
     "$script"
     if [[ "$?" -ne 0 ]]; then
       >&2 echo -e "${COLOR_ERROR}ERROR${TEXT_RESET} in conf.d script ${script}"
+      >&2 echo "All Installation resources are located at: $TEMP_DIR"
       return 1
     fi
   done
