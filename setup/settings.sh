@@ -15,8 +15,8 @@
 # PHALCON_INSTALLER=git:4.0.x:https://github.com/cphalcon/cphalcon.git
 # PHALCON_INSTALLER=repository:mainline
 # PHALCON_INSTALLER=repository:nightly
-# PHALCON_INSTALLER=tarball:4.0.0-alpha1
-# PHALCON_INSTALLER=tarball:https://github.com/phalcon/cphalcon/archive/v4.0.0-alpha1.tar.gz
+# PHALCON_INSTALLER=tarball:4.0.0-alpha4
+# PHALCON_INSTALLER=tarball:https://github.com/phalcon/cphalcon/archive/v4.0.0-alpha4.tar.gz
 
 # ZCOMPILER_INSTALLER=tarball:0.11.8
 # ZCOMPILER_INSTALLER=tarball:0.11.9
@@ -29,5 +29,5 @@
 # ZCOMPILER_INSTALLER=phar:https://github.com/phalcon/zephir/releases/download/0.11.9/zephir.phar
 # ZCOMPILER_INSTALLER=phar:file:///home/dschissler/zephir.phar
 
-# PHALCON_INSTALLER=tarball:4.0.0-alpha1
-# PHALCON_INSTALLER=tarball:https://github.com/phalcon/cphalcon/archive/v4.0.0-alpha1.tar.gz
+# PHALCON_INSTALLER=tarball:4.0.0-alpha4
+# PHALCON_INSTALLER=tarball:https://github.com/phalcon/cphalcon/archive/v4.0.0-alpha4.tar.gz

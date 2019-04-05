@@ -16,22 +16,22 @@ Here is the default Phalcon install definition.  It states that Phalcon should b
 PHALCON_INSTALLER=repository:stable
 ```
 
-Here is a Phalcon install definition for installing from the 4.0.0-alpha3 tarball from the official releases.
+Here is a Phalcon install definition for installing from the 4.0.0-alpha4 tarball from the official releases.
 
 ```bash
-PHALCON_INSTALLER=tarball:4.0.0-alpha3
+PHALCON_INSTALLER=tarball:4.0.0-alpha4
 ```
 
 This installs the same version but instead uses the tarball URL.
 
 ```bash
-PHALCON_INSTALLER=tarball:https://github.com/phalcon/cphalcon/archive/v4.0.0-alpha3.tar.gz
+PHALCON_INSTALLER=tarball:https://github.com/phalcon/cphalcon/archive/v4.0.0-alpha4.tar.gz
 ```
 
 It can also be used to install from a downloaded tarball.
 
 ```bash
-PHALCON_INSTALLER=tarball:file:///home/dschissler/v4.0.0-alpha3.tar.gz
+PHALCON_INSTALLER=tarball:file:///home/dschissler/v4.0.0-alpha4.tar.gz
 ```
 
 Finally here is a git example.  Notice that there are three sections delineated by a colon.  Note that it reads from the left and so the colon in the `https:` is ignored.
@@ -85,8 +85,8 @@ Inside the `setup/settings.sh` file you will see something like the following:
 # PHALCON_INSTALLER=git:4.0.x:https://github.com/cphalcon/cphalcon.git
 # PHALCON_INSTALLER=repository:mainline
 # PHALCON_INSTALLER=repository:nightly
-# PHALCON_INSTALLER=tarball:4.0.0-alpha3
-# PHALCON_INSTALLER=tarball:https://github.com/phalcon/cphalcon/archive/v4.0.0-alpha3.tar.gz
+# PHALCON_INSTALLER=tarball:4.0.0-alpha4
+# PHALCON_INSTALLER=tarball:https://github.com/phalcon/cphalcon/archive/v4.0.0-alpha4.tar.gz
 ```
 
 You can comment out any line to change the setting. You won't need to do an `export` call on these lines since these files are sourced with `set -a`. You may export any of these values from a parent shell and they will be used unless overridden.
