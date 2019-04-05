@@ -194,24 +194,23 @@ Finally return to the Overview screen. Notice that the install methods are diffe
 
 #### Create Custom Menus
 
-Setupify allows you to easily create custom menu items. The `setup/lib/menu.sh` file defines several reusable functions for use in your custom menus. The following functions are available; `menuTarball`, `menuGit`, `menuRepository`, `menuPhar`. To create a new custom menu item simple create a new .sh file in the `setup/lib/menu/` directory.
+Setupify allows you to easily create custom menus. The `setup/lib/section/` directory contains sections which may each have an optional menu.  Setupify provides the following helper menus; `menuTarball`, `menuGit`, `menuRepository`, `menuPhar`. To create a new custom menu item simple create a new section directory and place a new menu file inside of its section directory.
 
-**Create a helloworld menu with installer definition**
+**Create a helloworld menu with installer default**
 
-First create an empty `setup/lib/menu/helloworld.sh` file. The file does't need to be set as executable since it will be sourced instead of run directly.
+Create an empty `setup/lib/section/helloworld/menu_helloworld.sh` file. The file does't need to be set as executable since it will be sourced instead of run directly.
 
-Finally run the following commands in your terminal.
+Create a data file `setup/lib/section/helloworld/data.sh`
 
 ```bash
-export HELLOWORLD_INSTALLER=tarball:5.1.4
-./setup/menu.sh ubuntu1804
+HELLOWORLD_DEFAULT=tarball:555.5555
 ```
 
-Notice the `HELLOWORLD` in the status section as well as the `helloworld` menu item.
+Notice the `HELLOWORLD` installer in the status section as well as the `helloworld` menu item.
 
-![Zephir Git Branch](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.1/customize-helloworld.png)
+![Zephir Git Branch](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/customize-helloworld.png)
 
-Note: This is a hack to quickly demonstrate how to add new setupify functionality. To do this properly you will need to follow the conventions laid out in `setup/lib/data.sh`. Additionally, you will most likely want to copy an existing menu file as your starting point.
+Note: This is a hack to quickly demonstrate how to add new setupify functionality. To do this properly you will need to follow the conventions laid out in the other section menus in the `setup/lib/sections/` directory.
 
 #### License
 Setupify is licensed under the terms of LGPL.
