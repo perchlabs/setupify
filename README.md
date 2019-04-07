@@ -27,7 +27,7 @@ So you would run `./setup/install ubuntu1804` to start the automated provisionin
 
 Setupify includes a powerful `dialog` or `whiptail` menu wizard. To run the menu program call:
 
-`./setup/menu.sh`
+`./setup/menu`
 
 You will see a screen for choosing the operating system.
 
@@ -35,7 +35,7 @@ You will see a screen for choosing the operating system.
 
 You may bypass this screen by supplying the operating system from the command line:
 
-`./setup/menu.sh ubuntu1804`
+`./setup/menu ubuntu1804`
 
 Next you will see the overview screen. Select the *"Load Everything"* entry.
 
