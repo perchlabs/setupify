@@ -20,8 +20,8 @@ menu_interests() {
     triples="$triples $interestName $interestName $interestStatus"
   done
 
-  local numSkips=${#interestNameArr[@]}
-  local totalLines=$(($numSkips > 12 ? 20 : $numSkips + 7))
+  local numInterests=${#interestNameArr[@]}
+  local totalLines=$(($numInterests > 12 ? 20 : $numInterests + 7))
   local checks
   checks=$("$DIALOG" \
     --backtitle "$MENU_BACKTITLE" \
@@ -29,7 +29,7 @@ menu_interests() {
     --notags \
     --ok-button "Ok" \
     --cancel-button "Return to Customize" \
-    --checklist "Choose the provision steps of interest." $totalLines 70 $numSkips \
+    --checklist "Choose the provision steps of interest." $totalLines 70 $numInterests \
     $triples \
     3>&1 1>&2 2>&3)
   [[ $? -ne "$DIALOG_OK" ]] && return 0
@@ -37,21 +37,24 @@ menu_interests() {
   # First assume that all interests are disabled.
   local -A interestMap
   for interestName in ${interestNameArr[*]}; do
-    # Clean quotes from whiptail (dialog behaves differently)
-    interestName=${interestName//\"}
     interestMap["${interestName}_INTEREST"]=off
   done
 
   # Next turn on interests that were checked.
   for interestName in $checks; do
+    # Clean quotes from whiptail (dialog behaves differently)
+    interestName="${interestName%\"}"
+    interestName="${interestName#\"}"
+
     interestMap["${interestName}_INTEREST"]=on
   done
 
   # Set the new interest values.
+  local newInterest
   for interestVar in ${!interestMap[@]}; do
     local interestVal=${interestMap[$interestVar]}
-    [[ "$interestVal" = on ]] && local newSkip=1 || local newSkip=''
-    declare -g $interestVar=$newSkip
+    [[ "$interestVal" = on ]] && newInterest=1 || newInterest=''
+    declare -g "$interestVar"="$newInterest"
   done
 }
 export -f menu_interests
