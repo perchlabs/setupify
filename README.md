@@ -163,11 +163,11 @@ dschissler@setupify:~/setupify$ ./setup/provision.sh ubuntu1804
 
 This could be useful if you were going to be testing the provision many times from a single terminal.
 
-#### Powerful conf.d provisioning stages
+#### Powerful init.d provisioning stages
 
 Setupify provides powerful staged init scripts for configuring the system package manager, zephir_parser, Zephir and Phalcon.
 
-To start look at the `setup/os/ubuntu1804/` directory.  You will see one file; `os.sh` and three directories `conf.d/`, `functions/` and `lists/`.
+To start look at the `setup/os/ubuntu1804/` directory.  You will see one file; `os.sh` and three directories `init.d/`, `functions/` and `lists/`.
 
 **Basic OS Parts**
 
@@ -175,14 +175,14 @@ To start look at the `setup/os/ubuntu1804/` directory.  You will see one file; `
 * `functions/` defines OS specific functions.  Define functions here and they will be available in the init scripts.
 * `lists/` stores basic lists like package names. Inside is the `package` and `pecl` files which simply list out the packages to install. This way you don't need to define your package lists in bash code. You can comment out lines in the lists by starting them with a hash.
 
-**conf.d Init Scripts**
-The `conf.d/` directory is filled with number ordered executable scripts. For example script `00-foo.sh` runs before `01-fee.sh`. If ordering is an important matter then it is advised to not rely on alphabetic ordering of the name part but to instead assign the script a different numbered prefix.
+**init.d Init Scripts**
+The `init.d/` directory is filled with number ordered executable scripts. For example script `00-foo.sh` runs before `01-fee.sh`. If ordering is an important matter then it is advised to not rely on alphabetic ordering of the name part but to instead assign the script a different numbered prefix.
 
 Out of the box the init scripts currently installs; system packages, PECL packages, zephir_parser, Zephir, Phalcon and Node.js. At the moment you will need to setup a database and web server yourself. There are just two many combinations for an initial release.
 
 **Interest Sections**
 
-You can define "interests" environment variables for conf.d init scripts in the form `*_INTEREST`. For example to enable PECL downloading, compiling and installation you would definie `PECL_INTEREST=1` in the parent shell or setting files.  Here is an example of what happens when an interest is not defined:
+You can define "interests" environment variables for init.d init scripts in the form `*_INTEREST`. For example to enable PECL downloading, compiling and installation you would definie `PECL_INTEREST=1` in the parent shell or setting files.  Here is an example of what happens when an interest is not defined:
 
 ```bash
 [[ -z "$PECL_INTEREST" ]] && exit 0
@@ -190,7 +190,7 @@ You can define "interests" environment variables for conf.d init scripts in the 
 
 Being able to manually define interests can be exceedingly useful when developing new tech or testing your custom provisioning steps. If the answer to the question *"Do I really want to wait for my PECL PHP extensions to compile each time?"* is a *"No!"* then consider not turning on the interests steps. At the moment the following interest steps are available: `PACKAGES_INTEREST`, `PECL_INTEREST`. You may define these interests in the parent shell or in your `settings.sh` config.
 
-Additionally a low tech way to skip an entire conf.d init script is to temporary rename it be prefixed with the hash character. For example renaming `01-foo.sh` to `#01-foo.sh` will cause it be ignored. This is a great low tech way to debug your custom conf.d scripts.
+Additionally a low tech way to skip an entire init.d init script is to temporary rename it be prefixed with the hash character. For example renaming `01-foo.sh` to `#01-foo.sh` will cause it be ignored. This is a great low tech way to debug your custom init.d scripts.
 
 **Init Script Failure**
 

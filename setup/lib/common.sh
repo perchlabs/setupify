@@ -129,12 +129,12 @@ startInstallation() {
   done
 
   # Find all of the files that begin with two digits and sort them.
-  local scripts=$(find "$OS_DIR/conf.d" -maxdepth 1 -type f -name "[0-9][0-9]-*" | sort)
+  local scripts=$(find "$OS_DIR/init.d" -maxdepth 1 -type f -name "[0-9][0-9]-*" | sort)
   local script
   for script in $scripts; do
     "$script"
     if [[ "$?" -ne 0 ]]; then
-      >&2 echo -e "${COLOR_ERROR}ERROR${TEXT_RESET} in conf.d script ${script}"
+      >&2 echo -e "${COLOR_ERROR}ERROR${TEXT_RESET} in init.d script ${script}"
       >&2 echo "All Installation resources are located at: $TEMP_DIR"
       return 1
     fi
