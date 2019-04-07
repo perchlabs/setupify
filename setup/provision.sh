@@ -5,4 +5,4 @@ LIB_DIR=$SETUP_ROOT_DIR/lib
 source "$LIB_DIR/common.sh"
 
 initCommon "$1" true
-startProvision
+startInstallation
