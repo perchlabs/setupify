@@ -77,7 +77,7 @@ case "$method" in
     [[ $? -ne 0 ]] && exit 1
 
     echo "Installing Zephir Composer packages."
-    # composer install --quiet 2>&1 /dev/null
+    # composer install --quiet > /dev/null 2>&1
     composer install --quiet
     [[ $? -ne 0 ]] && exit 1
 

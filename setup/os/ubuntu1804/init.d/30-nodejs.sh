@@ -14,7 +14,7 @@ packageName=nodejs
 # then remove the package from the system so that it doesn't interfere
 # with other installation methods.
 if [[ "$method" != repository ]]; then
-  dpkg -s "$packageName" 2>&1 /dev/null
+  dpkg -s "$packageName" > /dev/null 2>&1
   [[ $? -eq 0 ]] && sudo apt-get remove "$packageName"
 fi
 
