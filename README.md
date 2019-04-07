@@ -10,18 +10,18 @@ Setupify is a collection of bash scripts for provisioning a system. The included
 
 #### How to start
 
-In the `setup/` directory there are three files; `menu.sh`, `provision.sh` and `settings.sh`.
+In the `setup/` directory there are three files; `install`, `menu` and `settings`.
 
-By running `./setup/provision.sh` without any arguments you will see the following:
+By running `./setup/install` without any arguments you will see the following:
 
 ```
-dschissler@setupify:~/setupify$ ./setup/provision.sh
+dschissler@setupify:~/setupify$ ./setup/install
 An OS name must be specified for provisioning.
 Possible OS names include:
 ubuntu1804
 ```
 
-So you would run `./setup/provision.sh ubuntu1804` to start the automated provisioning. Setupify will first obtain sudo permissions for later use.
+So you would run `./setup/install ubuntu1804` to start the automated provisioning. Setupify will first obtain sudo permissions for later use.
 
 ### Menu Assisted Provisioning
 
@@ -41,7 +41,7 @@ Next you will see the overview screen. Select the *"Load Everything"* entry.
 
 ![Setupify Menu Overview](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/overview-load-everything.png)
 
-If you choose *"Install"* it will enter the automated provisioning in the exact same way as if you ran `./setup/provision.sh ubuntu1804`.
+If you choose *"Install"* it will enter the automated provisioning in the exact same way as if you ran `./setup/install ubuntu1804`.
 
 We'll choose the *"Customize"* menu item. Notice how the installers are now defined.
 
@@ -152,13 +152,13 @@ ZCOMPILER_INSTALLER=phar:https://github.com/phalcon/zephir/releases/download/0.1
 
 #### Alternative and more persistent settings
 
-You may also define your installers and other settings in `./setup/settings.sh`. By default `settings.sh` comes with many examples which are commented out.
+You may also define your installers and other settings in `./setup/settings`. By default `settings` comes with many examples which are commented out.
 
-You may also export your installer definitions from the shell. For example these commands will change the Phalcon repository to `mainline` without modifying `setup/settings.sh`:
+You may also export your installer definitions from the shell. For example these commands will change the Phalcon repository to `mainline` without modifying `setup/settings`:
 
 ```
 dschissler@setupify:~/setupify$ export PHALCON_INSTALLER=repository:mainline
-dschissler@setupify:~/setupify$ ./setup/provision.sh ubuntu1804
+dschissler@setupify:~/setupify$ ./setup/install ubuntu1804
 ```
 
 This could be useful if you were going to be testing the provision many times from a single terminal.
@@ -188,7 +188,7 @@ You can define "interests" environment variables for init.d init scripts in the 
 [[ -z "$PECL_INTEREST" ]] && exit 0
 ```
 
-Being able to manually define interests can be exceedingly useful when developing new tech or testing your custom provisioning steps. If the answer to the question *"Do I really want to wait for my PECL PHP extensions to compile each time?"* is a *"No!"* then consider not turning on the interests steps. At the moment the following interest steps are available: `PACKAGES_INTEREST`, `PECL_INTEREST`. You may define these interests in the parent shell or in your `settings.sh` config.
+Being able to manually define interests can be exceedingly useful when developing new tech or testing your custom provisioning steps. If the answer to the question *"Do I really want to wait for my PECL PHP extensions to compile each time?"* is a *"No!"* then consider not turning on the interests steps. At the moment the following interest steps are available: `PACKAGES_INTEREST`, `PECL_INTEREST`. You may define these interests in the parent shell or in your `settings` config.
 
 Additionally a low tech way to skip an entire init.d init script is to temporary rename it be prefixed with the hash character. For example renaming `01-foo.sh` to `#01-foo.sh` will cause it be ignored. This is a great low tech way to debug your custom init.d scripts.
 
