@@ -5,11 +5,6 @@ PHP_SAPI_LIST="${PHP_SAPI_LIST:-cli}"
 
 SOFTWARE_INSTALL_ROOT=${SOFTWARE_INSTALL_ROOT:-~/opt}
 
-INTEREST_DEFINITIONS=(
-  PACKAGES
-  PECL
-)
-
 MENU_BACKTITLE="Perch Labs Setupifier Menu v${VERSION}"
 
 # Colorize provisioning.

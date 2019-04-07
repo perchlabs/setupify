@@ -22,16 +22,20 @@ initCommon() {
 
   # Automatically export the variables in these files.
   set -a
-  source "$SETUP_ROOT_DIR/settings.sh"
+  source "$SETUP_ROOT_DIR/settings"
   source "$LIB_DIR/data.sh"
 
   # Define interests while preserving existing values.
-  local interestName
+  local interestLine
   local interestVar
-  for interestName in ${INTEREST_DEFINITIONS[@]}; do
-    interestVar="${interestName}_INTEREST"
-    declare -g $interestVar=${!interestVar}
-    export "$interestVar"
+  local regex="([A-Z]+_INTEREST)"
+  local interestLines=$(egrep -nd recurse '[\$|\{][A-Z]+_INTEREST' settings "$OS_DIR")
+  for interestLine in $interestLines; do
+    if [[ "$interestLine" =~ $regex ]]; then
+      local interestVar=${BASH_REMATCH[1]}
+      declare -g $interestVar=${!interestVar}
+      export "$interestVar"
+    fi
   done
 
   # Load a data file for each section.
