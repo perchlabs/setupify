@@ -22,5 +22,6 @@ gcc
 libpcre3-dev
 make
 php-dev
+pkg-config
 re2c
 
