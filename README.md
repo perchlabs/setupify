@@ -175,7 +175,7 @@ To start look at the `setup/os/ubuntu1804/` directory.  You will see one file; `
 * `functions/` defines OS specific functions.  Define functions here and they will be available in the init scripts.
 * `lists/` stores basic lists like package names. Inside is the `package` and `pecl` files which simply list out the packages to install. This way you don't need to define your package lists in bash code. You can comment out lines in the lists by starting them with a hash.
 
-**init.d Init Scripts**
+**init.d Scripts**
 The `init.d/` directory is filled with number ordered executable scripts. For example script `00-foo.sh` runs before `01-fee.sh`. If ordering is an important matter then it is advised to not rely on alphabetic ordering of the name part but to instead assign the script a different numbered prefix.
 
 Out of the box the init scripts currently installs; system packages, PECL packages, zephir_parser, Zephir, Phalcon and Node.js. At the moment you will need to setup a database and web server yourself. There are just two many combinations for an initial release.
