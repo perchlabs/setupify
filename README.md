@@ -152,9 +152,9 @@ ZCOMPILER_INSTALLER=phar:https://github.com/phalcon/zephir/releases/download/0.1
 
 #### Alternative and more persistent settings
 
-You may also define your installers and other settings in `./setup/settings`.
+1) You may define your installers and other settings in `./setup/settings`.
 
-You may also export your installer definitions from the shell. For example these commands will change the Phalcon repository to `mainline` without modifying `setup/settings`:
+2) You may also export your installer definitions from the shell. For example these commands will change the Phalcon repository to `mainline` without modifying `setup/settings`:
 
 ```
 dschissler@setupify:~/setupify$ export PHALCON_INSTALLER=repository:mainline
