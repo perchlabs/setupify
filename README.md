@@ -182,15 +182,27 @@ Out of the box the init scripts currently installs; system packages, PECL packag
 
 **Interest Sections**
 
-You can define "interests" environment variables for init.d init scripts in the form `*_INTEREST`. For example to enable PECL downloading, compiling and installation you would definie `PECL_INTEREST=1` in the parent shell or setting files.  Here is an example of what happens when an interest is not defined:
+You can create "interest" environment variables within your init.d scripts that will allow you to toggle the execution of blocks of code or to completely skip the contents of a script.  Setupify will scan your code for any `^[A-Z]+_INTEREST$` variable patterns in your code.
+
+Here is a typical example of what happens when an interest is not defined:
 
 ```bash
 [[ -z "$PECL_INTEREST" ]] && exit 0
 ```
 
-Being able to manually define interests can be exceedingly useful when developing new tech or testing your custom provisioning steps. If the answer to the question *"Do I really want to wait for my PECL PHP extensions to compile each time?"* is a *"No!"* then consider not turning on the interests steps. At the moment the following interest steps are available: `PACKAGES_INTEREST`, `PECL_INTEREST`. You may define these interests in the parent shell or in your `settings` config.
+There are two standard ways to use interests depending on if the `install` or `menu` script is used.
 
-Additionally a low tech way to skip an entire init.d init script is to temporary rename it be prefixed with the hash character. For example renaming `01-foo.sh` to `#01-foo.sh` will cause it be ignored. This is a great low tech way to debug your custom init.d scripts.
+1) The `./setup/install` script is designed to be a one-stop-shop for installing a base system and so it will activate all interests in order to perform every operation.
+
+2) Te `./setup/menu` script starts with all interests disabled in order to allow you to turn on individual interests during the development process.  You may turn on interests by specifying *"Load everything"* from the main menu or by enabling individual interests in the *"Interests"* customize menu.  This is a core philosophical feature of setupify in that it allows you to use the same provision script for deployment as well as trying out new software versions during development.
+
+In order to achieve the desired usability of setupify, please make sure that any operations peformed in your init.d scripts are indepotent.  For example: that means if a user is added to something that running the script again will not have a negative effect on the system either; by first checking that the user exists or that adding the user again will not break anything or result in multiple entries.  If you can test each system modification for initial install as well as when it is performed a second time then you will be able to enjoy a production provisioning system that also doubles as an amazing development tool.
+
+Being able to manually define interests can be exceedingly useful when developing new tech or testing your custom provisioning steps. If the answer to the question *"Do I really want to wait for my PECL PHP extensions to compile each time that I check something?"* is a *"No!"* then consider not turning on that interests steps while running the `menu` script.
+
+**Low tech script avoidance**
+
+Additionally a low tech way to skip an entire init.d init script is to temporary rename it be prefixed with the hash character. For example renaming `01-foo.sh` to `#01-foo.sh` will cause it be ignored. This is a great low tech way of debugging your custom init.d scripts.
 
 **Init Script Failure**
 
