@@ -69,7 +69,7 @@ Enter the URL to the Zephir git repository. The default value should be the offi
 
 ![Zephir Git Url](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/zcompiler-git-url.png)
 
-Choose the default *"development"* repository.
+Choose the default *"development"* branch.
 
 ![Zephir Git Branch](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/zcompiler-git-branch.png)
 
