@@ -209,7 +209,7 @@ Additionally a low tech way to skip an entire init.d init script is to temporary
 Sometimes your init scripts will fail.  If any init script exits with a value other than `0` then the provisioning will be halted with an error message of the offending script.
 
 #### License
-Setupify is licensed under the terms of LGPL.
+Setupify is licensed under the terms of LGPL v3.
 
 #### The Book
 
