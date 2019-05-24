@@ -1,4 +1,4 @@
-VERSION=0.2.0
+VERSION=0.2.1
 
 # PHP SAPI list, default is cli only.
 PHP_SAPI_LIST="${PHP_SAPI_LIST:-cli}"

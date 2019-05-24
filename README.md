@@ -114,22 +114,22 @@ Here is the default Phalcon installer definition.  It states that Phalcon should
 PHALCON_INSTALLER=repository:stable
 ```
 
-Here is a Phalcon installer definition for installing from the 4.0.0-alpha4 tarball from the official releases.
+Here is a Phalcon installer definition for installing from the 4.0.0-alpha5 tarball from the official releases.
 
 ```bash
-PHALCON_INSTALLER=tarball:4.0.0-alpha4
+PHALCON_INSTALLER=tarball:4.0.0-alpha5
 ```
 
 This installs the same version but instead uses the tarball URL.
 
 ```bash
-PHALCON_INSTALLER=tarball:https://github.com/phalcon/cphalcon/archive/v4.0.0-alpha4.tar.gz
+PHALCON_INSTALLER=tarball:https://github.com/phalcon/cphalcon/archive/v4.0.0-alpha5.tar.gz
 ```
 
 It can also be used to installer from a downloaded tarball.
 
 ```bash
-PHALCON_INSTALLER=tarball:file:///home/dschissler/v4.0.0-alpha4.tar.gz
+PHALCON_INSTALLER=tarball:file:///home/dschissler/v4.0.0-alpha5.tar.gz
 ```
 
 Finally here is a git example.  Notice that there are three sections delineated by a colon.  Note that it reads from the left and so the colon in the `https:` is ignored.
