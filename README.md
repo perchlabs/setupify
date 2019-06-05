@@ -210,9 +210,3 @@ Sometimes your init scripts will fail.  If any init script exits with a value ot
 
 #### License
 Setupify is licensed under the terms of LGPL v3.
-
-#### The Book
-
-Buy my book! However, its a little late in the Phalcon v3 cycle so maybe just kind-of figure-out some-kind-of-way, to get it.
-
-[![Best book I ever wrote](https://github.com/perch-foundation/media-resources/raw/master/phalcon-cookbook.jpg)](https://www.amazon.com/Phalcon-Cookbook-David-Schissler/dp/1784396885)
