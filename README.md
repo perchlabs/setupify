@@ -41,11 +41,11 @@ Next you will see the overview screen. Select the *"Load Everything"* entry.
 
 ![Setupify Menu Overview](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/overview-load-everything.png)
 
-If you choose *"Install"* it will enter the automated provisioning in the exact same way as if you ran `./setup/install ubuntu1804`.
-
 We'll choose the *"Customize"* menu item. Notice how the installers are now defined.
 
 ![Setupify Customize Overview](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/overview-customize.png)
+
+If you choose *"Install"* at this point it will enter the automated provisioning in the exact same way as if you ran `./setup/install ubuntu1804`.
 
 We'll customize the *"Phalcon"* installer. So *Overview* --> *Customize* --> *Phalcon*.
 
