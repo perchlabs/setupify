@@ -45,9 +45,9 @@ We'll choose the *"Customize"* menu item. Notice how the installers are now defi
 
 ![Setupify Customize Overview](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/overview-customize.png)
 
-If you choose *"Install"* at this point it will enter the automated provisioning in the exact same way as if you ran `./setup/install ubuntu1804`.
+If you were to choose *"Install"* at this point it would enter the automated provisioning in the exact same way as if you ran `./setup/install ubuntu1804`.
 
-We'll customize the *"Phalcon"* installer. So *Overview* --> *Customize* --> *Phalcon*.
+Instead we'll first customize the *"Phalcon"* installer. So *Overview* --> *Customize* --> *Phalcon*.
 
 ![Setupify Customize Overview](https://github.com/perch-foundation/media-resources/raw/master/setupify/v0.2/customize-hover-phalcon.png)
 
