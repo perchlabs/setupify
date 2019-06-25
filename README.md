@@ -126,7 +126,7 @@ This installs the same version but instead uses the tarball URL.
 PHALCON_INSTALLER=tarball:https://github.com/phalcon/cphalcon/archive/v4.0.0-alpha5.tar.gz
 ```
 
-It can also be used to installer from a downloaded tarball.
+It can also be used to install from a downloaded tarball.
 
 ```bash
 PHALCON_INSTALLER=tarball:file:///home/dschissler/v4.0.0-alpha5.tar.gz
