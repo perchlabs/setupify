@@ -15,6 +15,9 @@ EOM
   local installer="${ZCOMPILER_INSTALLER:-$ZCOMPILER_DEFAULT}"
   local method=$(takeMethod "$installer")
 
+  local collapseOption
+  [[ "$DIALOG" =~ dialog ]] && collapseOption='--no-collapse'
+
   local option
   option=$("$DIALOG" \
     --backtitle "$MENU_BACKTITLE" \
@@ -22,6 +25,7 @@ EOM
     --notags \
     --default-item $method \
     --cancel-button "Return to Overview" \
+    $collapseOption \
     --menu "$msg" 17 80 4 \
       clear "Clear Installer" \
       phar "Phar" \
