@@ -16,7 +16,7 @@ menuInit() {
 
   # Load menu data.
   set -a
-    source "$LIB_DIR/menu/customize.sh"
+    source "$LIB_DIR/menu/installers.sh"
     source "$LIB_DIR/menu/interests.sh"
 
     for sectionName in $sectionNames; do
@@ -67,12 +67,12 @@ menuStart() {
     [[ $? -ne 0 ]] && return;
 
     case "$choice" in
-      "install")
+      "proceed")
         startInstallation
         break;
         ;;
-      "customize")
-        menuCustomize
+      "sections")
+        menuSection
         ;;
       "interests")
         echo "interests"

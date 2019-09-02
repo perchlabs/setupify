@@ -1,14 +1,14 @@
 
-menuCustomize() {
+menuInstallers() {
   while true; do
-  _menuCustomize
+  _menuInstaller
     [[ $? -ne 0 ]] && break;
   done
 }
-export -f menuCustomize
+export -f menuInstallers
 
 
-_menuCustomize() {
+_menuInstallers() {
   local menuList="$(getSectionNames)"
 
   local status
@@ -39,7 +39,7 @@ EOM
   local option
   option=$("$DIALOG" \
     --backtitle "$MENU_BACKTITLE" \
-    --title "Customize Installation" \
+    --title "Customize Installers" \
     --notags \
     --cancel-button "Return to Overview" \
     --menu "$msg" $totalLines 110 $numItems \
