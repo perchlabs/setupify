@@ -10,6 +10,20 @@ menuInit() {
   export DIALOG_OK=0
   export DIALOG_CANCEL=1
   export DIALOG_ESC=255
+
+  local sectionName
+  local sectionNames=$(getSectionNames)
+
+  # Load menu data.
+  set -a
+    source "$LIB_DIR/menu/customize.sh"
+    source "$LIB_DIR/menu/interests.sh"
+
+    for sectionName in $sectionNames; do
+      local sectionPathFrag="${sectionName}/menu_${sectionName}.sh"
+      source "$LIB_DIR/section/$sectionPathFrag"
+    done
+  set +a
 }
 export -f menuInit
 
@@ -47,22 +61,6 @@ export -f menuOsname
 
 
 menuStart() {
-  # Load menu data.
-
-  local menuCustomList
-  local fileName
-  local sectionName
-  local sectionNames=$(getSectionNames)
-
-  set -a
-  for sectionName in $sectionNames; do
-    local sectionPathFrag="${sectionName}/menu_${sectionName}.sh"
-    source "$LIB_DIR/section/$sectionPathFrag"
-
-    menuCustomList="$menuCustomList $sectionName"
-  done
-  set +a
-
   local choice
   while true; do
     choice=$(menuOverview)
@@ -74,10 +72,10 @@ menuStart() {
         break;
         ;;
       "customize")
-        while true; do
-          menuCustomize "$menuCustomList"
-          [[ $? -ne 0 ]] && break;
-        done
+        menuCustomize
+        ;;
+      "interests")
+        echo "interests"
         ;;
       "load_installers")
         loadInstallers
@@ -116,9 +114,10 @@ EOM
       --notags \
       --yes-button Install \
       --cancel-button Exit \
-      --menu "$msg" $totalLines 110 4 \
+      --menu "$msg" $totalLines 110 5 \
         install Install \
         customize Customize \
+        interests Interests \
         load_installers 'Load everything' \
         clear_installers 'Clear everything' \
     3>&1 1>&2 2>&3)
@@ -126,52 +125,6 @@ EOM
     echo $option
 }
 export -f menuOverview
-
-
-menuCustomize() {
-  local menuList="$1"
-
-  local status
-  status=$(printInstallerStatus)
-  local statusLines=$?
-
-  local msg
-  read -r -d '' msg << EOM
-Choose which feature to customize.
-
-$status
-EOM
-
-  local item
-  local menuVar
-  local pairs
-  local tag
-  for tag in $menuList; do
-    menuVar="MENU_${tag^^}_NAME"
-    [[ -z "${!menuVar}" ]] && item=$tag || item="${!menuVar}"
-    pairs="$pairs $tag $item"
-  done
-
-  local itemArr=($menuList)
-  local numItems=${#itemArr[@]}
-  local totalLines=$(($statusLines + $numItems + 9))
-  totalLines=$(($totalLines > 24 ? 24 : $totalLines))
-  local option
-  option=$("$DIALOG" \
-    --backtitle "$MENU_BACKTITLE" \
-    --title "Customize Installation" \
-    --notags \
-    --cancel-button "Return to Overview" \
-    --menu "$msg" $totalLines 110 $numItems \
-      $pairs \
-    3>&1 1>&2 2>&3)
-  [[ $? -ne "$DIALOG_OK" ]] && return 1
-
-  set -a
-  "menu_${option}"
-  set +a
-}
-export -f menuCustomize
 
 
 printInstallerStatus() {
