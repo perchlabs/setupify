@@ -71,11 +71,11 @@ menuStart() {
         startInstallation
         break;
         ;;
-      "sections")
-        menuSection
+      "installers")
+        menuInstallers
         ;;
       "interests")
-        echo "interests"
+        menuInterests
         ;;
       "load_installers")
         loadInstallers
@@ -112,11 +112,11 @@ EOM
       --backtitle "$MENU_BACKTITLE" \
       --title "Installation Overview" \
       --notags \
-      --yes-button Install \
+      --ok-button Ok \
       --cancel-button Exit \
       --menu "$msg" $totalLines 110 5 \
-        install Install \
-        customize Customize \
+        proceed Proceed \
+        installers Installers \
         interests Interests \
         load_installers 'Load everything' \
         clear_installers 'Clear everything' \

@@ -1,7 +1,7 @@
 
 menuInstallers() {
   while true; do
-  _menuInstaller
+  _menuInstallers
     [[ $? -ne 0 ]] && break;
   done
 }
