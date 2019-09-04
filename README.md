@@ -1,5 +1,7 @@
 ## Setupify Provisioning Tool
 
+**WARNING: Setupify is currently in a state of experimentation. Use tag release.**
+
 Setupify is a collection of bash scripts for provisioning a system. The included scripts emphasizes PHP and Zephir based tech, although it could be adapted to any use.  The bash scripts use only the most typical shell commands and so they should be portable to any modern Unix-like environment. Also included is a robust and optional `dialog` or `whiptail` shell menu program. One huge benefit of using Setupify as your starting point is that you can easily transition from PHP to Zephir based development.
 
 #### Intended Uses
