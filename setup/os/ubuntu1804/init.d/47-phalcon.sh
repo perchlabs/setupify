@@ -38,6 +38,12 @@ case "$method" in
       exit 1
     fi
     ;;
+  "pecl")
+    echo "Download Phalcon from PECL repository"
+    # TODO
+    echo "Installing Phalcon from PECL is not yet supported."
+    exit 1
+    ;;
   "tarball")
     ref=$(takeRef "$PHALCON_INSTALLER")
     downloadDir="$TEMP_DIR/phalcon"
