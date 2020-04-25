@@ -116,22 +116,22 @@ Here is the default Phalcon installer definition.  It states that Phalcon should
 PHALCON_INSTALLER=repository:stable
 ```
 
-Here is a Phalcon installer definition for installing from the 4.0.0-beta.2 tarball from the official releases.
+Here is a Phalcon installer definition for installing from the 4.0.5 tarball from the official releases.
 
 ```bash
-PHALCON_INSTALLER=tarball:4.0.0-beta.2
+PHALCON_INSTALLER=tarball:4.0.5
 ```
 
 This installs the same version but instead uses the tarball URL.
 
 ```bash
-PHALCON_INSTALLER=tarball:https://github.com/phalcon/cphalcon/archive/v4.0.0-beta.2.tar.gz
+PHALCON_INSTALLER=tarball:https://github.com/phalcon/cphalcon/archive/v4.0.5.tar.gz
 ```
 
 It can also be used to install from a downloaded tarball.
 
 ```bash
-PHALCON_INSTALLER=tarball:file:///home/dschissler/v4.0.0-beta.2.tar.gz
+PHALCON_INSTALLER=tarball:file:///home/dschissler/v4.0.5.tar.gz
 ```
 
 Finally here is a git example.  Notice that there are three sections delineated by a colon.  Note that it reads from the left and so the colon in the `https:` is ignored.
@@ -143,13 +143,13 @@ PHALCON_INSTALLER=git:3.4.x:https://github.com/cphalcon/cphalcon.git
 For Zephir lets look at the installer method for using a PHAR program.
 
 ```bash
-ZCOMPILER_INSTALLER=phar:0.11.9
+ZCOMPILER_INSTALLER=phar:0.12.18
 ```
 
 Again a full URL can be used
 
 ```bash
-ZCOMPILER_INSTALLER=phar:https://github.com/phalcon/zephir/releases/download/0.11.9/zephir.phar
+ZCOMPILER_INSTALLER=phar:https://github.com/phalcon/zephir/releases/download/0.12.18/zephir.phar
 ```
 
 #### Alternative and more persistent settings

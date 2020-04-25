@@ -2,7 +2,7 @@
 menuInterests() {
   _menuInterests
 }
-export -f _menuInterests
+export -f menuInterests
 
 
 _menuInterests() {
@@ -63,4 +63,4 @@ _menuInterests() {
     declare -g "$interestVar"="$newInterest"
   done
 }
-export -f menu_interests
+export -f _menuInterests
