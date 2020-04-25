@@ -51,7 +51,7 @@ initCommon() {
   local sectionNames=$(getSectionNames)
   local sectionName
   for sectionName in $sectionNames; do
-    local sectionDataPath="$LIB_DIR/section/${sectionName}/data.sh"
+    local sectionDataPath="$SETUP_ROOT_DIR/section/${sectionName}/data.sh"
     if [[ -f "$sectionDataPath" ]]; then
       source "$sectionDataPath"
     fi
@@ -161,7 +161,7 @@ export -f startInstallation
 
 getSectionNames() {
   local sectionNames
-  sectionNames=$(ls -d "$LIB_DIR"/section/*/ | xargs -n 1 basename)
+  sectionNames=$(ls -d "$SETUP_ROOT_DIR"/section/*/ | xargs -n 1 basename)
   [[ $? -ne 0 ]] && return 1
 
   echo $sectionNames

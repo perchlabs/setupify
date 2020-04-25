@@ -21,7 +21,7 @@ menuInit() {
 
     for sectionName in $sectionNames; do
       local sectionPathFrag="${sectionName}/menu_${sectionName}.sh"
-      source "$LIB_DIR/section/$sectionPathFrag"
+      source "$SETUP_ROOT_DIR/section/$sectionPathFrag"
     done
   set +a
 }
