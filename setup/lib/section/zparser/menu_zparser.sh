@@ -12,7 +12,7 @@ menu_zparser() {
     --default-item $method \
     --cancel-button "Return to Customize" \
     --menu "Choose the method for installing zephir_parser." 11 60 3 \
-      clear "Clear Installer" \
+      clear "** Clear Installer **" \
       "tarball" "Tarball" \
       "git" "Git" \
       3>&1 1>&2 2>&3)

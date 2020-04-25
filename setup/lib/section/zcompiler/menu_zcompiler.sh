@@ -27,7 +27,7 @@ EOM
     --cancel-button "Return to Overview" \
     $collapseOption \
     --menu "$msg" 17 80 4 \
-      clear "Clear Installer" \
+      clear "** Clear Installer **" \
       phar "Phar" \
       tarball "Tarball" \
       git "Git" \

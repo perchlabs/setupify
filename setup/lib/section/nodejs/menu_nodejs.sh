@@ -11,7 +11,7 @@ menu_nodejs() {
     --notags \
     --default-item $method \
     --menu "Choose the method for installing Node.js." 9 60 2 \
-      clear "Clear Installer" \
+      clear "** Clear Installer **" \
       repository "Package Repository" \
       3>&1 1>&2 2>&3)
   [[ $? -ne "$DIALOG_OK" ]] && return 0

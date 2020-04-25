@@ -38,7 +38,7 @@ initCommon() {
   local interestLine
   local interestVar
   local regex="([A-Z]+_INTEREST)"
-  local interestLines=$(egrep -nd recurse '[\$|\{][A-Z]+_INTEREST' settings "$OS_DIR")
+  local interestLines=$(egrep -nd recurse '[\$|\{][A-Z]+_INTEREST' "$SETUP_ROOT_DIR/settings" "$OS_DIR")
   for interestLine in $interestLines; do
     if [[ "$interestLine" =~ $regex ]]; then
       local interestVar=${BASH_REMATCH[1]}
