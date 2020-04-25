@@ -12,7 +12,7 @@ if [[ $? -ne 0 ]]; then
   exit 1
 fi
 
-# The package cache has been update so if there is no interest
+# The package cache has been updated so if there is no interest
 # in packages then we can skip expensive operations .
 [[ -z "$PACKAGES_INTEREST" ]] && exit 0
 

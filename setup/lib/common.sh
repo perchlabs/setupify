@@ -142,7 +142,19 @@ startInstallation() {
   done
 
   # Find all of the files that begin with two digits and sort them.
-  local scripts=$(find "$OS_DIR/init.d" -maxdepth 1 -type f -name "[0-9][0-9]-*" | sort)
+  # This searches up to one-level deep and excludes directories and
+  # file which begin with a '#'.
+  local scripts=$(
+    find "$OS_DIR/init.d" \
+      -maxdepth 2 \
+      -type f \
+      -name "[0-9][0-9]-*" \
+      -not -path "*/#*" | \
+    awk -vFS=/ -vOFS=/ '{ print $NF,$0 }' | \
+    sort -n -t / | \
+    cut -f2- -d/
+  )
+
   local script
   for script in $scripts; do
     "$script"
