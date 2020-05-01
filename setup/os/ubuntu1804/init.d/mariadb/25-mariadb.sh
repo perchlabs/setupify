@@ -37,7 +37,6 @@ if [[ ! -z "$MARIADB_NORMAL_USERNAME" && ! -z "$MARIADB_NORMAL_PASSWORD" ]]; the
 EOF
 fi
 
-
 # Flush prilileges
 sudo mysql --protocol=socket <<EOF
 FLUSH PRIVILEGES;

@@ -47,13 +47,6 @@ initCommon() {
     fi
   done
 
-  local sectionPathFrag
-  local sectionPathFrags=$(getSectionPathFrags)
-  for sectionPathFrag in $sectionPathFrags; do
-    echo $sectionPathFrag
-  done
-  exit
-
   # Load a data file for each section.
   local sectionPathFrags=$(getSectionPathFrags)
   local sectionPathFrag
@@ -177,20 +170,28 @@ startInstallation() {
 }
 export -f startInstallation
 
-# getSectionNames
+
+getSectionNames() {
+  local sectionName
+  local sectionNames
+  local sectionPathFrags=$(getSectionPathFrags)
+  for sectionPathFrag in $sectionPathFrags; do
+    sectionName=$(basename "$sectionPathFrag")
+    sectionNames="$sectionNames $sectionName"
+  done
+
+  echo $sectionNames
+}
+export -f getSectionNames
+
+
 getSectionPathFrags() {
   local sectionPathFrags
-
   sectionPathFrags=$(
     cd "$SETUP_ROOT_DIR" && \
     find section -mindepth 1 -maxdepth 2 -type d | \
     awk '!/@[a-z]+$/'
   )
-
-  # sectionNames=$(cd "$SETUP_ROOT_DIR" && find section -mindepth 1 -maxdepth 2 -type d)
-  # echo "$sectionNames"
-  # sectionNames=$(find "$SETUP_ROOT_DIR"/section -type d -ls | xargs -n 1 basename)
-  # sectionNames=$(ls -d "$SETUP_ROOT_DIR"/section/*/ | xargs -n 1 basename)
   [[ $? -ne 0 ]] && return 1
 
   echo $sectionPathFrags

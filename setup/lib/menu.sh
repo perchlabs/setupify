@@ -19,9 +19,15 @@ menuInit() {
     source "$LIB_DIR/menu/installers.sh"
     source "$LIB_DIR/menu/interests.sh"
 
-    for sectionName in $sectionNames; do
-      local sectionPathFrag="${sectionName}/menu_${sectionName}.sh"
-      source "$SETUP_ROOT_DIR/section/$sectionPathFrag"
+    local sectionPathFrags=$(getSectionPathFrags)
+    local sectionPathFrag
+    for sectionPathFrag in $sectionPathFrags; do
+      local sectionName=$(basename $sectionPathFrag)
+      local sectionDataPath="$SETUP_ROOT_DIR/${sectionPathFrag}/menu_${sectionName}.sh"
+      echo "$sectionDataPath"
+      if [[ -f "$sectionDataPath" ]]; then
+        source "$sectionDataPath"
+      fi
     done
   set +a
 }
