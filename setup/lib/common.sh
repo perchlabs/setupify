@@ -19,7 +19,7 @@ initCommon() {
   fi
   export TEMP_DIR=$(mktemp -d)
 
-  # Reset all font settings
+  # Reset all font settings.
   export TEXT_RESET='\e[0m'
 
   # Automatically export the variables in these files.
@@ -47,11 +47,18 @@ initCommon() {
     fi
   done
 
+  local sectionPathFrag
+  local sectionPathFrags=$(getSectionPathFrags)
+  for sectionPathFrag in $sectionPathFrags; do
+    echo $sectionPathFrag
+  done
+  exit
+
   # Load a data file for each section.
-  local sectionNames=$(getSectionNames)
-  local sectionName
-  for sectionName in $sectionNames; do
-    local sectionDataPath="$SETUP_ROOT_DIR/section/${sectionName}/data.sh"
+  local sectionPathFrags=$(getSectionPathFrags)
+  local sectionPathFrag
+  for sectionPathFrag in $sectionPathFrags; do
+    local sectionDataPath="$SETUP_ROOT_DIR/${sectionPathFrag}/data.sh"
     if [[ -f "$sectionDataPath" ]]; then
       source "$sectionDataPath"
     fi
@@ -170,15 +177,25 @@ startInstallation() {
 }
 export -f startInstallation
 
+# getSectionNames
+getSectionPathFrags() {
+  local sectionPathFrags
 
-getSectionNames() {
-  local sectionNames
-  sectionNames=$(ls -d "$SETUP_ROOT_DIR"/section/*/ | xargs -n 1 basename)
+  sectionPathFrags=$(
+    cd "$SETUP_ROOT_DIR" && \
+    find section -mindepth 1 -maxdepth 2 -type d | \
+    awk '!/@[a-z]+$/'
+  )
+
+  # sectionNames=$(cd "$SETUP_ROOT_DIR" && find section -mindepth 1 -maxdepth 2 -type d)
+  # echo "$sectionNames"
+  # sectionNames=$(find "$SETUP_ROOT_DIR"/section -type d -ls | xargs -n 1 basename)
+  # sectionNames=$(ls -d "$SETUP_ROOT_DIR"/section/*/ | xargs -n 1 basename)
   [[ $? -ne 0 ]] && return 1
 
-  echo $sectionNames
+  echo $sectionPathFrags
 }
-export -f getSectionNames
+export -f getSectionPathFrags
 
 
 readlist() {

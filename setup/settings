@@ -1,0 +1,3 @@
+
+# MARIADB_DBNAME=database_name_here
+# MARIADB_DUMP="$SETUP_ROOT_DIR/etc/dump_file.sql"
