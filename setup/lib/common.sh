@@ -19,9 +19,6 @@ initCommon() {
   fi
   export TEMP_DIR=$(mktemp -d)
 
-  # Reset all font settings.
-  export TEXT_RESET='\e[0m'
-
   # Automatically export the variables in these files.
   set -a
   source "$SETUP_ROOT_DIR/settings"

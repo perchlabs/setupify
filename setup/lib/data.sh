@@ -12,3 +12,5 @@ COLOR_SECTION='\e[94m'
 COLOR_NOTICE='\e[32m'
 COLOR_ERROR='\e[91m'
 
+# Reset all font settings.
+TEXT_RESET='\e[0m'
