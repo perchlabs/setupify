@@ -16,7 +16,7 @@ menuInit() {
 
   # Load menu data.
   set -a
-    source "$LIB_DIR/menu/installers.sh"
+    source "$LIB_DIR/menu/sections.sh"
     source "$LIB_DIR/menu/interests.sh"
 
     local sectionPathFrags=$(getSectionPathFrags)
@@ -77,8 +77,8 @@ menuStart() {
         startInstallation
         break;
         ;;
-      "installers")
-        menuInstallers
+      "sections")
+        menuSections
         ;;
       "interests")
         menuInterests
@@ -122,10 +122,10 @@ EOM
       --cancel-button Exit \
       --menu "$msg" $totalLines 110 5 \
         proceed Proceed \
-        installers Installers \
+        sections Sections \
         interests Interests \
-        load_installers 'Load everything' \
-        clear_installers 'Clear everything' \
+        load_installers '** Load everything **' \
+        clear_installers '** Clear everything **' \
     3>&1 1>&2 2>&3)
     [[ $? -ne "$DIALOG_OK" ]] && return 1
     echo $option

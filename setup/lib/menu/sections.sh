@@ -1,15 +1,15 @@
 
-menuInstallers() {
+menuSections() {
   while true; do
-  _menuInstallers
+  _menuSections
     [[ $? -ne 0 ]] && break;
   done
 }
-export -f menuInstallers
+export -f menuSections
 
 
-_menuInstallers() {
-  local menuList="$(getSectionNames)"
+_menuSections() {
+  local sectionList="$(getSectionNames)"
 
   local status
   status=$(printInstallerStatus)
@@ -17,7 +17,7 @@ _menuInstallers() {
 
   local msg
   read -r -d '' msg << EOM
-Choose which feature to customize.
+Choose which section to customize.
 
 $status
 EOM
@@ -26,20 +26,20 @@ EOM
   local menuVar
   local pairs
   local tag
-  for tag in $menuList; do
+  for tag in $sectionList; do
     menuVar="MENU_${tag^^}_NAME"
     [[ -z "${!menuVar}" ]] && item=$tag || item="${!menuVar}"
     pairs="$pairs $tag $item"
   done
 
-  local itemArr=($menuList)
+  local itemArr=($sectionList)
   local numItems=${#itemArr[@]}
   local totalLines=$(($statusLines + $numItems + 9))
   totalLines=$(($totalLines > 24 ? 24 : $totalLines))
   local option
   option=$("$DIALOG" \
     --backtitle "$MENU_BACKTITLE" \
-    --title "Customize Installers" \
+    --title "Customize Sections" \
     --notags \
     --cancel-button "Return to Overview" \
     --menu "$msg" $totalLines 110 $numItems \

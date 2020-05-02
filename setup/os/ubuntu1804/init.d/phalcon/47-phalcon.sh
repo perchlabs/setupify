@@ -2,7 +2,7 @@
 # Environment variables SETUP_ROOT_DIR, OS_DIR and TEMP_DIR are available
 
 method=$(takeMethod "$PHALCON_INSTALLER")
-[[ -z "$PHALCON_INTEREST" || -z "$method" ]] && exit 0
+[[ -z "$method" ]] && exit 0
 
 echo -e "${COLOR_SECTION}*** Phalcon ***${TEXT_RESET}"
 
@@ -11,8 +11,8 @@ cd "$TEMP_DIR"
 packageName="php${PHP_VERSION}-phalcon"
 
 # If the Phalcon installation method is something other than repository
-# then remove the package from the system so that it doesn't interfere
-# with other installation methods.
+# and the package is currently installed then remove the package from the
+# system so that it doesn't interfere with other installation methods.
 if [[ "$method" != repository ]]; then
   dpkg -s "$packageName" > /dev/null 2>&1
   [[ $? -eq 0 ]] && sudo apt-get remove "$packageName"
