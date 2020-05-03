@@ -16,15 +16,11 @@ menuInit() {
 
   # Load menu data.
   set -a
-    source "$LIB_DIR/menu/sections.sh"
-    source "$LIB_DIR/menu/interests.sh"
-
     local sectionPathFrags=$(getSectionPathFrags)
     local sectionPathFrag
     for sectionPathFrag in $sectionPathFrags; do
       local sectionName=$(basename $sectionPathFrag)
       local sectionDataPath="$SETUP_ROOT_DIR/${sectionPathFrag}/menu_${sectionName}.sh"
-      echo "$sectionDataPath"
       if [[ -f "$sectionDataPath" ]]; then
         source "$sectionDataPath"
       fi
@@ -133,6 +129,121 @@ EOM
 export -f menuOverview
 
 
+menuInterests() {
+  local interestName
+  local interestStatus
+  local interestVar
+
+  # Create an array of all enabled interests.
+  local interestNameArr=()
+  local interestVarList=$(compgen -v | grep -E '^[A-Z]+_INTEREST$')
+  local regex='^(.+)_INTEREST$'
+  for interestVar in $interestVarList; do
+    [[ "$interestVar" =~ $regex ]] && interestNameArr+=(${BASH_REMATCH[1]})
+  done
+
+  # Create the triplet tuples for the checklist dialog.
+  local triples
+  for interestName in ${interestNameArr[*]}; do
+    interestVar="${interestName}_INTEREST"
+    [[ -z "${!interestVar}" ]] && interestStatus=off || interestStatus=on
+    triples="$triples $interestName $interestName $interestStatus"
+  done
+
+  local numInterests=${#interestNameArr[@]}
+  local totalLines=$(($numInterests > 12 ? 20 : $numInterests + 7))
+  local checks
+  checks=$("$DIALOG" \
+    --backtitle "$MENU_BACKTITLE" \
+    --title "Choose steps of interest" \
+    --notags \
+    --ok-button "Ok" \
+    --nocancel \
+    --checklist "Choose the provision steps of interest." $totalLines 70 $numInterests \
+    $triples \
+    3>&1 1>&2 2>&3)
+  [[ $? -ne "$DIALOG_OK" ]] && return 1
+
+  # First assume that all interests are disabled.
+  local -A interestMap
+  for interestName in ${interestNameArr[*]}; do
+    interestMap["${interestName}_INTEREST"]=off
+  done
+
+  # Next turn on interests that were checked.
+  for interestName in $checks; do
+    # Clean quotes from whiptail (dialog behaves differently)
+    interestName="${interestName%\"}"
+    interestName="${interestName#\"}"
+
+    interestMap["${interestName}_INTEREST"]=on
+  done
+
+  # Set the new interest values.
+  local newInterest
+  for interestVar in ${!interestMap[@]}; do
+    local interestVal=${interestMap[$interestVar]}
+    [[ "$interestVal" = on ]] && newInterest=1 || newInterest=''
+    declare -g "$interestVar"="$newInterest"
+  done
+}
+export -f menuInterests
+
+
+menuSections() {
+  while true; do
+  _menuSections
+    [[ $? -ne 0 ]] && break;
+  done
+}
+export -f menuSections
+
+
+_menuSections() {
+  local sectionList="$(getSectionNames)"
+
+  local status
+  status=$(printInstallerStatus)
+  local statusLines=$?
+
+  local msg
+  read -r -d '' msg << EOM
+Choose which section to customize.
+
+$status
+EOM
+
+  local item
+  local menuVar
+  local pairs
+  local tag
+  for tag in $sectionList; do
+    menuVar="MENU_${tag^^}_NAME"
+    [[ -z "${!menuVar}" ]] && item=$tag || item="${!menuVar}"
+    pairs="$pairs $tag $item"
+  done
+
+  local itemArr=($sectionList)
+  local numItems=${#itemArr[@]}
+  local totalLines=$(($statusLines + $numItems + 9))
+  totalLines=$(($totalLines > 24 ? 24 : $totalLines))
+  local option
+  option=$("$DIALOG" \
+    --backtitle "$MENU_BACKTITLE" \
+    --title "Customize Sections" \
+    --notags \
+    --cancel-button "Return to Overview" \
+    --menu "$msg" $totalLines 110 $numItems \
+      $pairs \
+    3>&1 1>&2 2>&3)
+  [[ $? -ne "$DIALOG_OK" ]] && return 1
+
+  set -a
+  "menu_${option}"
+  set +a
+}
+
+
 printInstallerStatus() {
   local installerArr=($(compgen -v | grep -E '[A-Z]+_INSTALLER$'))
   local installerCount=${#installerArr[@]}
@@ -174,6 +285,8 @@ printInstallerStatus() {
   return $outputLineCount
 }
 export -f printInstallerStatus
+
+
 
 
 menuPecl() {
