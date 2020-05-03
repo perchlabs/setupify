@@ -28,9 +28,7 @@ menuInit() {
     for sectionPathFrag in $sectionPathFrags; do
       local sectionName=$(basename $sectionPathFrag)
       local sectionDataPath="$SETUP_ROOT_DIR/${sectionPathFrag}/menu_${sectionName}.sh"
-      if [[ -f "$sectionDataPath" ]]; then
-        source "$sectionDataPath"
-      fi
+      [[ -f "$sectionDataPath" ]] && source "$sectionDataPath"
     done
   set +a
 }
