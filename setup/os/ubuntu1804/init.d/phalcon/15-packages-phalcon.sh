@@ -7,7 +7,7 @@ method=$(takeMethod "$PHALCON_INSTALLER")
 # Remove any existing Phalcon repository.  This could prevent
 # two repository sources existing if the channel was changed.
 ls /etc/apt/sources.list.d/phalcon*.list > /dev/null 2>&1
-if [[ $? -ne 0 ]]; then
+if [[ $? -eq 0 ]]; then
   echo "Removing the existing Phalcon repositories."
   sudo rm -f /etc/apt/sources.list.d/phalcon*.list > /dev/null
 fi
