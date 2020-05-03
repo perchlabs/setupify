@@ -105,7 +105,7 @@ export -f menuStart
 
 menuOverview() {
   local status
-  status=$(printInstallerStatus)
+  status=$(printMenuStatus)
   local statusLines=$?
 
   local msg
@@ -115,23 +115,23 @@ Would you like to install using the current settings?
 $status
 EOM
 
-    local totalLines=$(($statusLines + 13))
-    local option
-    option=$("$DIALOG" \
-      --backtitle "$MENU_BACKTITLE" \
-      --title "Installation Overview" \
-      --notags \
-      --ok-button Ok \
-      --cancel-button Exit \
-      --menu "$msg" $totalLines 110 5 \
-        proceed Proceed \
-        sections Sections \
-        interests Interests \
-        load_installers '** Load everything **' \
-        clear_installers '** Clear everything **' \
-    3>&1 1>&2 2>&3)
-    [[ $? -ne "$DIALOG_OK" ]] && return 1
-    echo $option
+  local totalLines=$(($statusLines + 14))
+  local option
+  option=$("$DIALOG" \
+    --backtitle "$MENU_BACKTITLE" \
+    --title "Installation Overview" \
+    --notags \
+    --ok-button Ok \
+    --cancel-button Exit \
+    --menu "$msg" $totalLines 110 5 \
+      proceed Proceed \
+      interests Interests \
+      sections Sections \
+      load_installers '** Load everything **' \
+      clear_installers '** Clear everything **' \
+  3>&1 1>&2 2>&3)
+  [[ $? -ne "$DIALOG_OK" ]] && return 1
+  echo $option
 }
 export -f menuOverview
 
@@ -210,7 +210,7 @@ _menuSections() {
   local sectionList="$(getSectionNames)"
 
   local status
-  status=$(printInstallerStatus)
+  status=$(printMenuStatus)
   local statusLines=$?
 
   local msg
@@ -251,7 +251,52 @@ EOM
 }
 
 
-printInstallerStatus() {
+printMenuStatus() {
+  printMenuInterestStatus
+  local interestStatusLines=$?
+
+  printMenuInstallerStatusLines
+  local installerStatusLines=$?
+
+  local outputLineCount=$((interestStatusLines + installerStatusLines))
+
+  # Return the number of status lines
+  return $outputLineCount
+}
+export -f printMenuStatus
+
+
+printMenuInterestStatus() {
+  local interestArr=($(compgen -v | grep -E '[A-Z]+_INTEREST$'))
+  local regex='(.+)_INTEREST$'
+
+  local interestVar
+  local name
+  local nameArr=()
+  for interestVar in ${interestArr[@]}; do
+    [[ "$interestVar" =~ $regex ]] && name=${BASH_REMATCH[1]}
+    [[ ! -z "${!interestVar}" ]] && nameArr+=($name)
+  done
+
+  if [[ ${#nameArr[@]} -eq 0 ]]; then
+    printf "No interests have been enabled"
+  else
+    printf "INTERESTS:"
+    for i in ${!nameArr[@]}; do
+      interestVar=${interestArr[$i]}
+      name=${nameArr[$i]}
+      printf " $name"
+    done
+  fi
+
+  printf "\n"
+
+  return 1
+}
+export -f printMenuInterestStatus
+
+
+printMenuInstallerStatusLines() {
   local installerArr=($(compgen -v | grep -E '[A-Z]+_INSTALLER$'))
   local installerCount=${#installerArr[@]}
   local nameArr=()
@@ -268,11 +313,7 @@ printInstallerStatus() {
     maxLen=$(( len > maxLen ? len : maxLen ))
   done
 
-  # Print PHP version
-  printf "%${maxLen}s" PHP
-  echo ": $PHP_VERSION"
-
-  let outputLineCount=$((installerCount + 1))
+  local outputLineCount=$((installerCount))
 
   if [[ "$installerCount" -eq 0 ]]; then
     outputLineCount=$((outputLineCount + 1))
@@ -288,7 +329,7 @@ printInstallerStatus() {
     done
   fi
 
-  # Return the number of status lines
+  # Return the number of installer lines
   return $outputLineCount
 }
-export -f printInstallerStatus
+export -f printMenuInstallerStatusLines
