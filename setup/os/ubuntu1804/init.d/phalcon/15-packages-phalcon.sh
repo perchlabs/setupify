@@ -4,7 +4,15 @@
 method=$(takeMethod "$PHALCON_INSTALLER")
 [[ -z "$method" ]] && exit 0
 
-# If the Phalcon method is not 'repository' then exit
+# Remove any existing Phalcon repository.  This could prevent
+# two repository sources existing if the channel was changed.
+ls /etc/apt/sources.list.d/phalcon*.list > /dev/null 2>&1
+if [[ $? -ne 0 ]]; then
+  echo "Removing the existing Phalcon repositories."
+  sudo rm -f /etc/apt/sources.list.d/phalcon*.list > /dev/null
+fi
+
+# If the Phalcon method is 'repository' then install it.
 if [[ "$method" == repository ]]; then
   ref=$(takeRef "$PHALCON_INSTALLER")
 
@@ -14,13 +22,6 @@ if [[ "$method" == repository ]]; then
   if [[ $? -ne 0 ]]; then
     >&2 echo "Unable to install Phalcon repository."
     exit 1
-  fi
-else
-  # If the Phalcon install method isn't 'repository' then remove an existing Phalcon repository.
-  ls /etc/apt/sources.list.d/phalcon*.list > /dev/null 2>&1
-  if [[ $? -ne 0 ]]; then
-    echo "Removing the existing Phalcon repositories."
-    sudo rm -f /etc/apt/sources.list.d/phalcon*.list > /dev/null
   fi
 fi
 
