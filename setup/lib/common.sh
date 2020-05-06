@@ -152,9 +152,19 @@ startInstallation() {
     cut -f2- -d/
   )
 
+  local initScriptPath="$OS_DIR/init.sh"
+  source "$initScriptPath"
+  initdPrepare
+  if [[ "$?" -ne 0 ]]; then
+    >&2 echo -e "${COLOR_ERROR}ERROR${TEXT_RESET} in $initScriptPath"
+    >&2 echo "All Installation resources are located at: $TEMP_DIR"
+    return 1
+  fi
+
   local script
   for script in $scripts; do
     "$script"
+
     if [[ "$?" -ne 0 ]]; then
       >&2 echo -e "${COLOR_ERROR}ERROR${TEXT_RESET} in init.d script ${script}"
       >&2 echo "All Installation resources are located at: $TEMP_DIR"
