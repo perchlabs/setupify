@@ -7,7 +7,6 @@ vim
 
 # php
 php-cli
-php-fpm
 php-common
 php-curl
 php-mbstring
