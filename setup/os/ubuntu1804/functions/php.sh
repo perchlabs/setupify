@@ -38,7 +38,8 @@ export -f phpConfAll
 phpIsUsingSapi() {
   local sapi="$1"
 
-  echo "$PHP_SAPI_LIST" | grep -w "$sapi" > /dev/null
+  echo "$PHP_SAPI_LIST" | grep -w "$sapi" > /dev/null 2>&1
+  return $?
 }
 export -f phpIsUsingSapi
 
