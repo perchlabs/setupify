@@ -18,7 +18,6 @@ initdPrepare() {
 
   echo "$PATH" | grep ~/bin > /dev/null 2>&1
   if [[ $? -ne 0 ]]; then
-    echo "Couldn't find it"
     export PATH="$PATH":~/bin
   fi
 

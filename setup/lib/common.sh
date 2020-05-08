@@ -138,10 +138,19 @@ startInstallation() {
     source "$fscript"
   done
 
+  local initScriptPath="$OS_DIR/init.sh"
+  source "$initScriptPath"
+  initdPrepare
+  if [[ "$?" -ne 0 ]]; then
+    >&2 echo -e "${COLOR_ERROR}ERROR${TEXT_RESET} in $initScriptPath"
+    >&2 echo "All Installation resources are located at: $TEMP_DIR"
+    return 1
+  fi
+
   # Find all of the files that begin with two digits and sort them.
   # This searches up to one-level deep and excludes directories and
   # file which begin with a '#'.
-  local scripts=$(
+  local scriptPathList=$(
     find "$OS_DIR/init.d" \
       -maxdepth 2 \
       -type f \
@@ -152,21 +161,19 @@ startInstallation() {
     cut -f2- -d/
   )
 
-  local initScriptPath="$OS_DIR/init.sh"
-  source "$initScriptPath"
-  initdPrepare
-  if [[ "$?" -ne 0 ]]; then
-    >&2 echo -e "${COLOR_ERROR}ERROR${TEXT_RESET} in $initScriptPath"
-    >&2 echo "All Installation resources are located at: $TEMP_DIR"
-    return 1
-  fi
+  local scriptPath
+  for scriptPath in $scriptPathList; do
+    if [[ ! -x "$scriptPath" ]]; then
+      >&2 echo -e "${COLOR_ERROR}ERROR${TEXT_RESET} in init.d script ${scriptPath}"
+      >&2 echo "The script permissions are not set to executable."
+      >&2 echo "All Installation resources are located at: $TEMP_DIR"
+      return 1
+    fi
 
-  local script
-  for script in $scripts; do
-    "$script"
+    "$scriptPath"
 
     if [[ "$?" -ne 0 ]]; then
-      >&2 echo -e "${COLOR_ERROR}ERROR${TEXT_RESET} in init.d script ${script}"
+      >&2 echo -e "${COLOR_ERROR}ERROR${TEXT_RESET} in init.d script ${scriptPath}."
       >&2 echo "All Installation resources are located at: $TEMP_DIR"
       return 1
     fi

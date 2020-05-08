@@ -5,9 +5,8 @@
 # phpConfAll memory_limit 512M
 
 # FPM specific setup.
-usingFpm=$(phpIsUsingSapi fpm)
-if [[ "$usingFpm" -eq 0 ]]; then
-
+phpIsUsingSapi fpm
+if [[ "$?" -eq 0 ]]; then
   pooldConf=${PHP_ETC}/fpm/pool.d/www.conf
   fpmSockFile=/run/php/php${PHP_VERSION}-fpm.sock
 
