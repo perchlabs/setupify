@@ -138,6 +138,13 @@ startInstallation() {
     source "$fscript"
   done
 
+  echo "Obtaining sudo capabilities"
+  sudo ls / > /dev/null
+  if [[ $? -ne 0 ]]; then
+    >&2 echo -e "FAILED to obtain sudo access"
+    return 1
+  fi
+
   local initScriptPath="$OS_DIR/init.sh"
   source "$initScriptPath"
   initdPrepare
