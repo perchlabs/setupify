@@ -141,7 +141,10 @@ startInstallation() {
   fi
 
   local initScriptPath="$OS_DIR/init.sh"
+  set -a
   source "$initScriptPath"
+  set +a
+
   initdPrepare
   if [[ "$?" -ne 0 ]]; then
     >&2 echo -e "${COLOR_ERROR}ERROR${TEXT_RESET} in $initScriptPath"
