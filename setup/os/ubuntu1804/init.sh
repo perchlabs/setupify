@@ -1,8 +1,15 @@
 #!/bin/bash
 # Environment variables SETUP_ROOT_DIR, OS_DIR and TEMP_DIR are available
 
-# This file is sourced, unlike the other init.d scripts.
+# This file is sourced and all variables will be automatically exported.
 
+PHP_VERSION=${PHP_VERSION:-7.2}
+PHP_ETC=${PHP_ETC:-/etc/php/$PHP_VERSION}
+DEBIAN_FRONTEND=${DEBIAN_FRONTEND:-noninteractive}
+
+MARIADB_HOST=${DATABASE_HOST:-localhost}
+
+# This function is run just prior to starting the init.d scripts.
 initdPrepare() {
   echo -e "${COLOR_SECTION}*** Initialization ***${TEXT_RESET}"
 

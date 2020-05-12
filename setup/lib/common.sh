@@ -59,11 +59,6 @@ initCommon() {
     loadInstallers
     enableAllInterests
   fi
-
-  # Load operating system settings.
-  set -a
-  source "$OS_DIR/os.sh"
-  set +a
 }
 export -f initCommon
 
