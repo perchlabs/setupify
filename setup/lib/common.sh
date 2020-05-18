@@ -1,27 +1,28 @@
 
 initCommon() {
-  local osName=$1
+  local platformName=$1
   local shouldPerformMaximumSteps=$2
 
-  if [[ -z "$osName" ]]; then
-    >&2 echo "An OS name must be specified for installation."
-    >&2 echo "Possible OS names include:"
-    >&2 ls -1 "$SETUP_ROOT_DIR/os"
+  if [[ -z "$platformName" ]]; then
+    >&2 echo "An platform name must be specified for installation."
+    >&2 echo "Possible platform names include:"
+    >&2 ls -1 "$CUSTOM_DIR/platform"
     exit 1
   fi
 
-  export OS_NAME="$osName"
-  export SETUP_ROOT_DIR
-  export OS_DIR="$SETUP_ROOT_DIR/os/$osName"
-  if [[ ! -d "$OS_DIR" ]]; then
-    >&2 echo "An installation directory does not exist for '$osName'."
+  export PLATFORM_NAME="$platformName"
+  export SETUP_DIR
+  export CUSTOM_DIR
+  export PLATFORM_DIR="$CUSTOM_DIR/platform/$platformName"
+  if [[ ! -d "$PLATFORM_DIR" ]]; then
+    >&2 echo "An installation directory does not exist for '$platformName'."
     exit 1
   fi
   export TEMP_DIR=$(mktemp -d)
 
   # Automatically export the variables in these files.
   set -a
-  source "$SETUP_ROOT_DIR/settings"
+  source "$SETUP_DIR/settings"
   source "$LIB_DIR/data.sh"
 
   # Source defined functions for system.
@@ -35,7 +36,7 @@ initCommon() {
   local interestLine
   local interestVar
   local regex="([A-Z]+_INTEREST)"
-  local interestLines=$(egrep -nd recurse '[\$|\{][A-Z]+_INTEREST' "$SETUP_ROOT_DIR/settings" "$OS_DIR")
+  local interestLines=$(egrep -nd recurse '[\$|\{][A-Z]+_INTEREST' "$SETUP_DIR/settings" "$PLATFORM_DIR")
   for interestLine in $interestLines; do
     if [[ "$interestLine" =~ $regex ]]; then
       local interestVar=${BASH_REMATCH[1]}
@@ -48,7 +49,7 @@ initCommon() {
   local sectionPathFrags=$(getSectionPathFrags)
   local sectionPathFrag
   for sectionPathFrag in $sectionPathFrags; do
-    local sectionDataPath="$SETUP_ROOT_DIR/${sectionPathFrag}/data.sh"
+    local sectionDataPath="$CUSTOM_DIR/${sectionPathFrag}/data.sh"
     if [[ -f "$sectionDataPath" ]]; then
       source "$sectionDataPath"
     fi
@@ -126,8 +127,8 @@ export -f disableAllInterests
 
 
 startInstallation() {
-  # Source OS functions
-  local functions=$(find "$OS_DIR/functions" -maxdepth 1 -type f)
+  # Source platform functions
+  local functions=$(find "$PLATFORM_DIR/functions" -maxdepth 1 -type f)
   local fscript
   for fscript in $functions; do
     source "$fscript"
@@ -140,7 +141,7 @@ startInstallation() {
     return 1
   fi
 
-  local initScriptPath="$OS_DIR/init.sh"
+  local initScriptPath="$PLATFORM_DIR/init.sh"
   set -a
   source "$initScriptPath"
   set +a
@@ -156,7 +157,7 @@ startInstallation() {
   # This searches up to one-level deep and excludes directories and
   # file which begin with a '#'.
   local scriptPathList=$(
-    find "$OS_DIR/init.d" \
+    find "$PLATFORM_DIR/init.d" \
       -maxdepth 2 \
       -type f \
       -name "[0-9][0-9]-*" \
@@ -207,7 +208,7 @@ export -f getSectionNames
 getSectionPathFrags() {
   local sectionPathFrags
   sectionPathFrags=$(
-    cd "$SETUP_ROOT_DIR" && \
+    cd "$CUSTOM_DIR" && \
     find section -mindepth 1 -maxdepth 2 -type d | \
     awk '!/@[a-z]+$/'
   )
@@ -219,7 +220,7 @@ export -f getSectionPathFrags
 
 
 readlist() {
-  echo $(grep -v -e '^#' -e '^$' "$OS_DIR/lists/$1")
+  echo $(grep -v -e '^#' -e '^$' "$PLATFORM_DIR/lists/$1")
 }
 export -f readlist
 

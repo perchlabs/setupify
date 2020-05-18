@@ -1,5 +1,5 @@
 #!/bin/bash
-# Environment variables SETUP_ROOT_DIR, OS_DIR and TEMP_DIR are available
+# Environment variables SETUP_DIR, CUSTOM_DIR, PLATFORM_DIR and TEMP_DIR are available
 
 # This file is sourced and all variables will be automatically exported.
 

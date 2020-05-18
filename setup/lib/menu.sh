@@ -27,7 +27,7 @@ menuInit() {
     local sectionPathFrag
     for sectionPathFrag in $sectionPathFrags; do
       local sectionName=$(basename $sectionPathFrag)
-      local sectionDataPath="$SETUP_ROOT_DIR/${sectionPathFrag}/menu_${sectionName}.sh"
+      local sectionDataPath="$CUSTOM_DIR/${sectionPathFrag}/menu_${sectionName}.sh"
       [[ -f "$sectionDataPath" ]] && source "$sectionDataPath"
     done
   set +a
@@ -35,36 +35,36 @@ menuInit() {
 export -f menuInit
 
 
-menuOsname() {
-  local osName=$1
+menuPlatformName() {
+  local platformName=$1
 
-  if [[ ! -z "$osName" ]]; then
-    echo "$osName"
+  if [[ ! -z "$platformName" ]]; then
+    echo "$platformName"
     exit 0
   fi
 
   local tag
   local pairs
-  local osArr=($(ls -1 "$SETUP_ROOT_DIR/os"))
-  for tag in ${osArr[@]}; do
+  local platformArr=($(ls -1 "$CUSTOM_DIR/platform"))
+  for tag in ${platformArr[@]}; do
     pairs="$pairs $tag $tag"
   done
 
-  local numItems=${#osArr[@]}
+  local numItems=${#platformArr[@]}
   local totalLines=$(($numItems + 7))
   local option
   option=$("$DIALOG" \
-    --title "Choose OS for installation" \
+    --title "Choose Platform for Installation" \
     --notags \
     --nocancel \
-    --menu "Choose which OS to us for installation." $totalLines 70 $numItems \
+    --menu "Choose which platform to use for installation." $totalLines 70 $numItems \
       $pairs \
     3>&1 1>&2 2>&3)
   [[ $? -ne "$DIALOG_OK" ]] && return 1
 
   echo $option
 }
-export -f menuOsname
+export -f menuPlatformName
 
 
 menuStart() {
