@@ -92,7 +92,7 @@ case "$method" in
     ;;
 esac
 
-phpExtensionEnableAll phalcon 50
+phpExtensionEnableAll phalcon 20
 if [[ $? -ne 0 ]]; then
   >&2 echo "Unable to enable Phalcon extension."
   exit 1
