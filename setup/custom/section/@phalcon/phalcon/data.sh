@@ -1,11 +1,11 @@
 
-PHALCON_DEFAULT_VERSION=3.4.5
+PHALCON_DEFAULT_VERSION=4.1.0
 
 PHALCON_DEFAULT=repository:stable
 
 # Phalcon menu.
 MENU_PHALCON_NAME=Phalcon
-MENU_PHALCON_GIT_BRANCH_DEFAULT=3.4.x
+MENU_PHALCON_GIT_BRANCH_DEFAULT=4.1.x
 MENU_PHALCON_GIT_URL_DEFAULT=https://github.com/phalcon/cphalcon.git
 MENU_PHALCON_BRANCHES=https://github.com/phalcon/cphalcon/branches
 MENU_PHALCON_VERSIONS=https://github.com/phalcon/cphalcon/releases

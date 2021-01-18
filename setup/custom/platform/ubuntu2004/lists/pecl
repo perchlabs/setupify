@@ -2,5 +2,4 @@
 # You must postfix with -alpha or -beta if the package is not stable.  Ex; foo-beta
 # Both together would look like: 10-foo-beta
 
-apcu
 10-psr

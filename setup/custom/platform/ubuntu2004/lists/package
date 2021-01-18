@@ -6,6 +6,7 @@ git
 vim
 
 # php
+php-apcu
 php-cli
 php-common
 php-curl
