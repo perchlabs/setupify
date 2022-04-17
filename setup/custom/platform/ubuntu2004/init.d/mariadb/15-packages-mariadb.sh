@@ -6,4 +6,4 @@
 [[ -z "$PACKAGES_INTEREST" ]] && exit 0
 
 sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
-sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://mirror.jaleco.com/mariadb/repo/10.4/ubuntu bionic main'
+sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] http://mirror.jaleco.com/mariadb/repo/10.4/ubuntu focal main'
