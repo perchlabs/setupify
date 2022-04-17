@@ -3,7 +3,7 @@
 
 [[ -z "$MARIADB_INTEREST" ]] && exit 0
 
-echo -e "${COLOR_SECTION}*** Phalcon ***${TEXT_RESET}"
+echo -e "${COLOR_SECTION}*** MariaDB ***${TEXT_RESET}"
 
 sudo apt-get install --quiet=2 mariadb-server mariadb-client
 
